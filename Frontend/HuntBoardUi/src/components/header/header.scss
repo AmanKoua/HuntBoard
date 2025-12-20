@@ -1,0 +1,17 @@
+header {
+  position: sticky;
+  top: 0;
+  //background-color: red;
+  border-bottom: 1px solid lightgray;
+  padding: .75rem;
+  height: 2rem;
+
+  .title {
+    //background-color:red;
+    width: max-content;
+    margin: auto auto auto 0;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+}

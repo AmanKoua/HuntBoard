@@ -2,12 +2,16 @@ main {
 
   display: flex;
   flex-direction: column;
+  //background-color:red;
+  margin:auto;
+  height: max-content;
+  width: max-content;
+  justify-self: center;
+  align-self: center;
 
   h1 {
-    font-family: Tahoma;
     margin: auto;
     padding: 1rem;
-
   }
 
 }
