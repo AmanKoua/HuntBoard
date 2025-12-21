@@ -6,6 +6,7 @@
   border: 1px solid gray;
   margin: auto auto 0 auto;
   border-radius: .25rem;
+  overflow-y: scroll;
 
   &__entry {
     display: flex;

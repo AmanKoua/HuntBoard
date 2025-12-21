@@ -1,16 +1,18 @@
 import "./ProfileSelector.scss";
-import {ProfileCard} from "../../components/profileCard/profileCard.tsx";
+import {type Profile, ProfileCard} from "../../components/profileCard/profileCard.tsx";
+import {useEffect, useState} from "react";
+import {getProfiles} from "../../services/axiosService.ts";
 
 export const ProfileSelector = () => {
 
-        const profiles = [ // TODO retrieve from backend
-                {
-                        name: "Test User 1"
-                },
-                {
-                        name: "Aman Koua"
-                }
-        ]
+        const [profiles, setProfiles] = useState<Profile[]>([])
+
+        useEffect(() => {
+                getProfiles().then((data)=>{
+                        setProfiles(data)
+                })
+        }, []);
+
 
         return <main>
                 <h1>Select Profile</h1>

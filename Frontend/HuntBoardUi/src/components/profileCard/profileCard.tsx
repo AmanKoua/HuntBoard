@@ -1,7 +1,9 @@
 import "./profileCard.scss"
 
-interface Profile {
-    name: string
+export interface Profile {
+    id: number;
+    firstName: string;
+    lastName: string;
 }
 
 interface IProfileCard  {
@@ -10,12 +12,11 @@ interface IProfileCard  {
 
 export const ProfileCard = ({profiles}: IProfileCard) => {
 
-
     // TODO : usememo?
     const generateProfiles = () => {
-        return profiles.map(profile => <div className={"profile-card__entry"}>
+        return profiles.map((profile, index) => <div className={"profile-card__entry"} key={index}>
             <p>
-                {profile.name}
+                {profile.firstName} {profile.lastName}
             </p>
         </div>)
     }
