@@ -1,9 +1,9 @@
 package models
 
 type Profile struct {
-	Id        int64
-	FirstName string
-	LastName  string
+	Id        int64  `json:"id"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
 }
 
 func GetMockProfileData() []Profile {
