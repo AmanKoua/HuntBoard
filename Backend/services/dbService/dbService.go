@@ -55,3 +55,18 @@ func autoMigrateModels(db *gorm.DB) {
 	}
 
 }
+
+func (this *DbService) MigrateMockData() {
+
+	mockData := models.GetMockProfileData()
+
+	for _, profile := range mockData {
+		tx := this.Db.Save(&profile)
+
+		if tx.Error != nil {
+			fmt.Println(tx.Error)
+			break
+		}
+	}
+
+}
