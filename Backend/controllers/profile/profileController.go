@@ -50,6 +50,9 @@ func (this *ProfileController) createProfile(c *fiber.Ctx) error {
 		})
 	}
 
+	// TODO : stopped here! Find if email already exists in DB
+	//this.dbService.Db.Find()
+
 	return nil
 
 }
