@@ -1,0 +1,30 @@
+.profile-creation-card {
+
+  background-color: hsl(224, 19%, 97%); // TODO : make this a var
+  width: 30rem;
+  height: max-content;
+  border: 1px solid gray;
+  margin: auto auto 0 auto;
+  border-radius: .25rem;
+
+  &__input_group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:1rem;
+    padding: 1rem;
+    border-radius: .25rem;
+    border: 1px solid gray;
+
+    label {
+      padding: .25rem;
+      height: max-content;
+    }
+
+    input {
+      height: 1.5rem;
+    }
+
+  }
+
+}
