@@ -32,6 +32,10 @@ export const ProfileSelector = () => {
                 toggleSelectingProfile()
         }
 
+        const selectProfile = (profile: Profile) => {
+                localStorage.setItem("profile", JSON.stringify(profile))
+        }
+
         useEffect(() => {
                 getProfiles().then((data)=>{
                         setProfiles(data)
@@ -40,7 +44,11 @@ export const ProfileSelector = () => {
 
         return <main>
                 <h1>{isSelectingProfile ? 'Select Profile' : 'Create Profile'}</h1>
-                {isSelectingProfile ? <ProfileCard profiles={profiles}/> : <ProfileCreationCard firstName={firstName} lastName={lastName} email={email} setEmail={setEmail} setLastName={setLastName} setFirstName={setFirstName}/>}
+                {
+                        isSelectingProfile ?
+                        <ProfileCard profiles={profiles} selectProfile={selectProfile}/> :
+                        <ProfileCreationCard firstName={firstName} lastName={lastName} email={email} setEmail={setEmail} setLastName={setLastName} setFirstName={setFirstName}/>
+                }
                 <div className={'button-group'}>
                         <button className={"button"} onClick={sendProfileCreationRequest}>
                                 Create Profile

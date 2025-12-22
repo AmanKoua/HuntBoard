@@ -9,17 +9,20 @@ export interface Profile {
 
 interface IProfileCard  {
     profiles: Profile[]
+    selectProfile : (val: Profile) => void;
 }
 
-export const ProfileCard = ({profiles}: IProfileCard) => {
+export const ProfileCard = ({profiles, selectProfile}: IProfileCard) => {
 
     // TODO : usememo?
     const generateProfiles = () => {
-        return profiles.map((profile, index) => <div className={"profile-card__entry"} key={index}>
+        return profiles.map((profile, index) => <button className={"profile-card__entry"} key={index} onClick={() => {
+            selectProfile(profile)
+        }}>
             <p>
                 {profile.firstName} {profile.lastName}
             </p>
-        </div>)
+        </button>)
     }
 
     return <section className={"profile-card"}>
