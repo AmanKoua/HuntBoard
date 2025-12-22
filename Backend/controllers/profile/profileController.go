@@ -62,6 +62,17 @@ func (this *ProfileController) createProfile(c *fiber.Ctx) error {
 		})
 	}
 
-	return nil
+	newProfile := entity.Profile{FirstName: createProfileRequest.FirstName, LastName: createProfileRequest.LastName, Email: createProfileRequest.Email}
+	tx := this.dbService.Db.Create(&newProfile)
+
+	if tx.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "there was failing persisting the new profile",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "successfully created new profile",
+	})
 
 }
