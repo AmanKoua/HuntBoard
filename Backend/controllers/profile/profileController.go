@@ -4,17 +4,17 @@ import (
 	"github.com/AmanKoua/huntboard/models/profile/entity"
 	"github.com/AmanKoua/huntboard/models/profile/request"
 	"github.com/AmanKoua/huntboard/services/db"
-	"github.com/go-playground/validator/v10"
+	"github.com/AmanKoua/huntboard/services/utils"
 	"github.com/gofiber/fiber/v2"
 )
 
 type ProfileController struct {
 	dbService *db.Service
-	validate  *validator.Validate
+	validator *utils.Validator
 }
 
 func NewController(db *db.Service) *ProfileController {
-	validate := validator.New()
+	validate := utils.ConstructValidator()
 	return &ProfileController{db, validate}
 }
 
@@ -42,7 +42,7 @@ func (this *ProfileController) createProfile(c *fiber.Ctx) error {
 
 	}
 
-	err := this.validate.Struct(createProfileRequest)
+	err := this.validator.Test(createProfileRequest)
 
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
