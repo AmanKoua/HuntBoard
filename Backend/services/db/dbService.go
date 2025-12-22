@@ -3,7 +3,7 @@ package db
 import (
 	"fmt"
 
-	"github.com/AmanKoua/huntboard/models/profile/entity"
+	"github.com/AmanKoua/huntboard/models/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -50,6 +50,7 @@ func initializeDbConnection() *gorm.DB {
 func autoMigrateModels(db *gorm.DB) {
 
 	err := db.AutoMigrate(&entity.Profile{})
+	err = db.AutoMigrate(&entity.JobTitle{})
 
 	if err != nil {
 		panic(err)

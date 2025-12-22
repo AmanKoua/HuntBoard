@@ -3,8 +3,8 @@ package profile
 import (
 	"errors"
 
-	"github.com/AmanKoua/huntboard/models/profile/entity"
-	"github.com/AmanKoua/huntboard/models/profile/request"
+	"github.com/AmanKoua/huntboard/models/entity"
+	"github.com/AmanKoua/huntboard/models/request"
 	"github.com/AmanKoua/huntboard/services/db"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
