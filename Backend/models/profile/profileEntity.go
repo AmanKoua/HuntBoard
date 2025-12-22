@@ -1,4 +1,4 @@
-package models
+package profile
 
 type Profile struct {
 	Id        int64  `json:"id" gorm:"primaryKey"`

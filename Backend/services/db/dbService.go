@@ -1,9 +1,9 @@
-package dbService
+package db
 
 import (
 	"fmt"
 
-	"github.com/AmanKoua/huntboard/models"
+	"github.com/AmanKoua/huntboard/models/profile"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -16,17 +16,18 @@ const (
 	dbname   = "postgres"
 )
 
-type DbService struct {
+type Service struct {
 	Db *gorm.DB
 }
 
-func New() *DbService {
+func New() *Service {
 	db := initializeDbConnection()
 	autoMigrateModels(db)
-	return &DbService{db}
+	return &Service{db}
 }
 
 func initializeDbConnection() *gorm.DB {
+
 	dbSourceName := fmt.Sprintf(
 		`host=%s
 		 port=%d
@@ -48,7 +49,7 @@ func initializeDbConnection() *gorm.DB {
 
 func autoMigrateModels(db *gorm.DB) {
 
-	err := db.AutoMigrate(&models.Profile{})
+	err := db.AutoMigrate(&profile.Profile{})
 
 	if err != nil {
 		panic(err)
@@ -56,9 +57,9 @@ func autoMigrateModels(db *gorm.DB) {
 
 }
 
-func (this *DbService) MigrateMockData() {
+func (this *Service) MigrateMockData() {
 
-	mockData := models.GetMockProfileData()
+	mockData := profile.GetMockProfileData()
 
 	for _, profile := range mockData {
 		tx := this.Db.Save(&profile)
