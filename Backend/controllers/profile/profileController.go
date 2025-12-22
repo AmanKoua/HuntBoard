@@ -21,16 +21,24 @@ func NewController(db *db.Service) *ProfileController {
 	return &ProfileController{db, validate}
 }
 
-func (this *ProfileController) Register(app *fiber.App) error {
+func (this *ProfileController) Register(app *fiber.App) {
 	profile := app.Group("/profile")
-	profile.Get("/", this.getMockData)
+
+	profile.Get("/", this.getProfiles)
 	profile.Post("/create", this.createProfile)
-	return nil
 }
 
-func (this *ProfileController) getMockData(c *fiber.Ctx) error {
-	mockData := entity.GetMockProfileData()
-	return c.Status(fiber.StatusOK).JSON(mockData)
+func (this *ProfileController) getProfiles(c *fiber.Ctx) error {
+	profiles := []entity.Profile{}
+	tx := this.dbService.Db.Find(&profiles)
+
+	if tx.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "failed to retrieve persisted profiles",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(profiles)
 }
 
 func (this *ProfileController) createProfile(c *fiber.Ctx) error {

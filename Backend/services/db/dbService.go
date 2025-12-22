@@ -56,18 +56,3 @@ func autoMigrateModels(db *gorm.DB) {
 	}
 
 }
-
-func (this *Service) MigrateMockData() {
-
-	mockData := entity.GetMockProfileData()
-
-	for _, profile := range mockData {
-		tx := this.Db.Save(&profile)
-
-		if tx.Error != nil {
-			fmt.Println(tx.Error)
-			break
-		}
-	}
-
-}
