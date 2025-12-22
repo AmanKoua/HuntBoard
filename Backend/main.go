@@ -17,8 +17,6 @@ func main() {
 	app.Use(cors.New())
 
 	dbService := db.New()
-	//db.MigrateMockData() // TODO : only use once (to populate mock data)
-	//fmt.Println(dbService)
 
 	profileController := profile.NewController(dbService)
 	profileController.Register(app)

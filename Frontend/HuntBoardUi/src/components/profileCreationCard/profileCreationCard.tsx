@@ -1,11 +1,16 @@
 import "./profileCreationCard.scss"
-import {useState} from "react";
+import type {SetState} from "../../utils/types.ts";
 
-export const ProfileCreationCard = () => {
+interface IProfileCreationCard {
+    firstName: string;
+    lastName: string;
+    email: string;
+    setFirstName: SetState<string>;
+    setLastName: SetState<string>;
+    setEmail: SetState<string>;
+}
 
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [email, setEmail] = useState('')
+export const ProfileCreationCard = ({firstName, lastName, email, setFirstName, setLastName, setEmail}: IProfileCreationCard) => {
 
     return <div className={'profile-creation-card'}>
         <div className={'profile-creation-card__input_group'}>

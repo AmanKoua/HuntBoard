@@ -1,25 +1,35 @@
 import "./ProfileSelector.scss";
 import {type Profile, ProfileCard} from "../../components/profileCard/profileCard.tsx";
 import {useEffect, useState} from "react";
-import {getProfiles} from "../../services/axiosService.ts";
+import {createProfile, getProfiles} from "../../services/axiosService.ts";
 import {ProfileCreationCard} from "../../components/profileCreationCard/profileCreationCard.tsx";
 
 export const ProfileSelector = () => {
 
         const [profiles, setProfiles] = useState<Profile[]>([])
         const [isSelectingProfile, setIsSelectingProfile] = useState(true);
+        const [firstName, setFirstName] = useState('')
+        const [lastName, setLastName] = useState('')
+        const [email, setEmail] = useState('')
 
-        const toggleSelectingProflile = ()=>{
+        const toggleSelectingProfile = ()=>{
                 setIsSelectingProfile((val) => !val)
         }
 
-        const createProfile = () => {
+        const sendProfileCreationRequest = async () => {
 
                 if (!isSelectingProfile) {
-                        // create profile
+                        await createProfile({
+                                firstName,
+                                lastName,
+                                email
+                        })
+                        getProfiles().then((data)=>{
+                                setProfiles(data)
+                        })
                 }
 
-                toggleSelectingProflile()
+                toggleSelectingProfile()
         }
 
         useEffect(() => {
@@ -30,13 +40,13 @@ export const ProfileSelector = () => {
 
         return <main>
                 <h1>{isSelectingProfile ? 'Select Profile' : 'Create Profile'}</h1>
-                {isSelectingProfile ? <ProfileCard profiles={profiles}/> : <ProfileCreationCard/>}
+                {isSelectingProfile ? <ProfileCard profiles={profiles}/> : <ProfileCreationCard firstName={firstName} lastName={lastName} email={email} setEmail={setEmail} setLastName={setLastName} setFirstName={setFirstName}/>}
                 <div className={'button-group'}>
-                        <button className={"button"} onClick={createProfile}>
+                        <button className={"button"} onClick={sendProfileCreationRequest}>
                                 Create Profile
                         </button>
 
-                        {!isSelectingProfile && <button className={'button'} onClick={toggleSelectingProflile}>Cancel</button>}
+                        {!isSelectingProfile && <button className={'button'} onClick={toggleSelectingProfile}>Cancel</button>}
                 </div>
 
         </main>
