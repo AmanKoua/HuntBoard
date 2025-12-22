@@ -1,19 +1,21 @@
 package profile
 
 import (
-	"fmt"
 	"github.com/AmanKoua/huntboard/models/profile/entity"
 	"github.com/AmanKoua/huntboard/models/profile/request"
 	"github.com/AmanKoua/huntboard/services/db"
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
 type ProfileController struct {
 	dbService *db.Service
+	validate  *validator.Validate
 }
 
 func NewController(db *db.Service) *ProfileController {
-	return &ProfileController{db}
+	validate := validator.New()
+	return &ProfileController{db, validate}
 }
 
 func (this *ProfileController) Register(app *fiber.App) error {
@@ -34,12 +36,18 @@ func (this *ProfileController) createProfile(c *fiber.Ctx) error {
 
 	if err := c.BodyParser(&createProfileRequest); err != nil {
 
-		fmt.Println(err)
-
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Failing parsing creation request",
 		})
 
+	}
+
+	err := this.validate.Struct(createProfileRequest)
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Failing parsing creation request (validation failed)!",
+		})
 	}
 
 	return nil
