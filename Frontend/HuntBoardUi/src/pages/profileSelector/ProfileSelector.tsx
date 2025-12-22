@@ -17,5 +17,6 @@ export const ProfileSelector = () => {
         return <main>
                 <h1>Select Profile</h1>
                 <ProfileCard profiles={profiles}/>
+                <button className={"create-button"}>Create Profile</button>
         </main>
 }

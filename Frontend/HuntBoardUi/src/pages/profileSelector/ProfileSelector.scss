@@ -9,12 +9,28 @@ main {
   justify-self: center;
   align-self: center;
 
-
-
   h1 {
     margin: auto;
     padding: 1rem;
   }
+
+  .create-button{
+    color: white;
+    margin: 1rem auto auto auto;
+    padding: 1rem;
+    background-color:#155dfc;
+    border-radius:.25rem;
+    border: none;
+    transition: all .25s;
+
+    &:hover{
+      box-shadow:  0 1px 2px 0 rgb(0 0 0 / 0.05); /* 0 1px 2px 0 rgb(0 0 0 / 0.05) */
+      border: 1px solid black;
+    }
+
+  }
+
+
 
 }
 
