@@ -1,4 +1,4 @@
-package profile
+package entity
 
 type Profile struct {
 	Id        int64  `json:"id" gorm:"primaryKey"`

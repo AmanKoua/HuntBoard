@@ -3,7 +3,7 @@ package db
 import (
 	"fmt"
 
-	"github.com/AmanKoua/huntboard/models/profile"
+	"github.com/AmanKoua/huntboard/models/profile/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -49,7 +49,7 @@ func initializeDbConnection() *gorm.DB {
 
 func autoMigrateModels(db *gorm.DB) {
 
-	err := db.AutoMigrate(&profile.Profile{})
+	err := db.AutoMigrate(&entity.Profile{})
 
 	if err != nil {
 		panic(err)
@@ -59,7 +59,7 @@ func autoMigrateModels(db *gorm.DB) {
 
 func (this *Service) MigrateMockData() {
 
-	mockData := profile.GetMockProfileData()
+	mockData := entity.GetMockProfileData()
 
 	for _, profile := range mockData {
 		tx := this.Db.Save(&profile)
