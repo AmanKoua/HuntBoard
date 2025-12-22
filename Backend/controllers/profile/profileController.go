@@ -1,11 +1,14 @@
 package profile
 
 import (
+	"errors"
+
 	"github.com/AmanKoua/huntboard/models/profile/entity"
 	"github.com/AmanKoua/huntboard/models/profile/request"
 	"github.com/AmanKoua/huntboard/services/db"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 type ProfileController struct {
@@ -50,8 +53,14 @@ func (this *ProfileController) createProfile(c *fiber.Ctx) error {
 		})
 	}
 
-	// TODO : stopped here! Find if email already exists in DB
-	//this.dbService.Db.Find()
+	existingProfile := entity.Profile{}
+	err = this.dbService.Db.Where("email = ?", createProfileRequest.Email).Take(&existingProfile).Error
+
+	if !errors.Is(err, gorm.ErrRecordNotFound) {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "user with email : " + createProfileRequest.Email + " already exists!",
+		})
+	}
 
 	return nil
 
