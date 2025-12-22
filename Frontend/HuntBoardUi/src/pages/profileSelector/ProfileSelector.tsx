@@ -9,18 +9,35 @@ export const ProfileSelector = () => {
         const [profiles, setProfiles] = useState<Profile[]>([])
         const [isSelectingProfile, setIsSelectingProfile] = useState(true);
 
+        const toggleSelectingProflile = ()=>{
+                setIsSelectingProfile((val) => !val)
+        }
+
+        const createProfile = () => {
+
+                if (!isSelectingProfile) {
+                        // create profile
+                }
+
+                toggleSelectingProflile()
+        }
+
         useEffect(() => {
                 getProfiles().then((data)=>{
                         setProfiles(data)
                 })
         }, []);
 
-
         return <main>
                 <h1>{isSelectingProfile ? 'Select Profile' : 'Create Profile'}</h1>
                 {isSelectingProfile ? <ProfileCard profiles={profiles}/> : <ProfileCreationCard/>}
-                <button className={"create-button"} onClick={()=>{
-                        setIsSelectingProfile((val) => !val)
-                }}>Create Profile</button>
+                <div className={'button-group'}>
+                        <button className={"button"} onClick={createProfile}>
+                                Create Profile
+                        </button>
+
+                        {!isSelectingProfile && <button className={'button'} onClick={toggleSelectingProflile}>Cancel</button>}
+                </div>
+
         </main>
 }

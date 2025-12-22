@@ -14,7 +14,11 @@ main {
     padding: 1rem;
   }
 
-  .create-button{
+  .button-group {
+    display: flex;
+  }
+
+  .button{
     color: white;
     margin: 1rem auto auto auto;
     padding: 1rem;
