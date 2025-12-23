@@ -1,8 +1,6 @@
 package jobTitles
 
 import (
-	"fmt"
-
 	"github.com/AmanKoua/huntboard/models/entity"
 	"github.com/AmanKoua/huntboard/models/request"
 	"github.com/AmanKoua/huntboard/services/db"
@@ -31,7 +29,6 @@ func (this *JobTitleController) Register(app *fiber.App) {
 func (this *JobTitleController) verifyProfile(c *fiber.Ctx) error { // TODO : refactor middleware, to make it reusable
 
 	profileId := c.Get("profileId")
-	fmt.Println(profileId)
 
 	if len(profileId) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -54,8 +51,19 @@ func (this *JobTitleController) verifyProfile(c *fiber.Ctx) error { // TODO : re
 }
 
 func (this *JobTitleController) getJobTitles(c *fiber.Ctx) error {
-	// TODO : impl
-	return nil
+
+	profile := c.Locals("profile").(entity.Profile)
+	jobTitlesArr := []entity.JobTitle{}
+
+	tx := this.dbService.Db.Find(&jobTitlesArr, "profile_id = ?", profile.Id)
+
+	if tx.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "failed to retrieve job titles",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(jobTitlesArr)
 
 }
 
