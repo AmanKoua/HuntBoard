@@ -25,6 +25,7 @@ func (this *ContactController) Register(app *fiber.App) {
 	contact := app.Group("/contact")
 	contact.Use(this.verifyProfileWrapper)
 
+	contact.Get("/", this.getContacts)
 	contact.Post("/", this.createContact)
 	contact.Put("/", this.attachJobListing)
 
@@ -32,6 +33,21 @@ func (this *ContactController) Register(app *fiber.App) {
 
 func (this *ContactController) verifyProfileWrapper(c *fiber.Ctx) error {
 	return middleware.VerifyProfile(c, this.dbService)
+}
+
+func (this *ContactController) getContacts(c *fiber.Ctx) error {
+
+	profile := c.Locals("profile").(entity.Profile)
+	contacts := []entity.Contact{}
+
+	if tx := this.dbService.Db.Find(&contacts, "profile_id = ?", profile.Id); tx.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "failed to retrieve contacts",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(contacts)
+
 }
 
 func (this *ContactController) createContact(c *fiber.Ctx) error {
@@ -58,6 +74,7 @@ func (this *ContactController) createContact(c *fiber.Ctx) error {
 		LastName:     createContactRequest.LastName,
 		Email:        createContactRequest.Email,
 		PhoneNum:     createContactRequest.PhoneNum,
+		Type:         createContactRequest.Type,
 		Description:  createContactRequest.Description,
 	}
 
