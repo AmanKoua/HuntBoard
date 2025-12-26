@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/AmanKoua/huntboard/controllers/jobListing"
 	"github.com/AmanKoua/huntboard/controllers/jobTitles"
 	"github.com/AmanKoua/huntboard/controllers/profile"
@@ -10,8 +8,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
-
-var _ = fmt.Println // TODO : remove
 
 func main() {
 

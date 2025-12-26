@@ -52,6 +52,7 @@ func autoMigrateModels(db *gorm.DB) {
 	err := db.AutoMigrate(&entity.Profile{})
 	err = db.AutoMigrate(&entity.JobTitle{})
 	err = db.AutoMigrate(&entity.JobListing{})
+	err = db.AutoMigrate(&entity.JobSkill{})
 
 	if err != nil {
 		panic(err)

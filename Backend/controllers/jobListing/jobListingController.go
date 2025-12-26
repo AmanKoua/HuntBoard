@@ -1,6 +1,8 @@
 package jobListing
 
 import (
+	"strconv"
+
 	"github.com/AmanKoua/huntboard/middleware"
 	"github.com/AmanKoua/huntboard/models/entity"
 	"github.com/AmanKoua/huntboard/models/request"
@@ -26,6 +28,8 @@ func (this *JobListingController) Register(app *fiber.App) {
 
 	jobListing.Get("/", this.getJobListing)
 	jobListing.Post("/create", this.createJobListing)
+	jobListing.Put("/skills", this.attachJobSkills)
+	jobListing.Get("/skills/:jobListingId", this.getJobSkills)
 
 }
 
@@ -92,5 +96,89 @@ func (this *JobListingController) createJobListing(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "job listing created successfully",
 	})
+
+}
+
+func (this *JobListingController) attachJobSkills(c *fiber.Ctx) error {
+
+	attachJobSkillsRequest := request.AttachJobSkillsRequest{}
+
+	if err := c.BodyParser(&attachJobSkillsRequest); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "could not parse job skills attachment request",
+		})
+	}
+
+	err := this.validator.Struct(attachJobSkillsRequest)
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "job skills attachment request body failed validation!",
+		})
+	}
+
+	jobListing := entity.JobListing{}
+
+	tx := this.dbService.Db.Find(&jobListing, "id = ?", attachJobSkillsRequest.JobListingId)
+
+	if tx.Error != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": "no job listing found, for provided id",
+		})
+	}
+
+	for _, skill := range attachJobSkillsRequest.Skills {
+
+		jobSkill := entity.JobSkill{
+			JobListingId: attachJobSkillsRequest.JobListingId,
+			Name:         skill,
+		}
+
+		tx := this.dbService.Db.Save(&jobSkill)
+
+		if tx.Error != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "could not persist job skill!",
+			})
+		}
+
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "successfully attached job skills",
+	})
+
+}
+
+func (this *JobListingController) getJobSkills(c *fiber.Ctx) error {
+
+	jobListingParam := c.Params("jobListingId")
+	jobListingId, err := strconv.Atoi(jobListingParam)
+
+	if len(jobListingParam) == 0 || err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "jobListingId path variable was malformed",
+		})
+	}
+
+	jobListing := entity.JobListing{}
+	tx := this.dbService.Db.Find(&jobListing, "id = ?", int64(jobListingId))
+
+	if tx.Error != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": "no job listing found, for provided id",
+		})
+	}
+
+	jobSkills := []entity.JobSkill{}
+	tx = this.dbService.Db.Find(&jobSkills, "job_listing_id = ?", int64(jobListingId))
+
+	if tx.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "could not retrieve job skills",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(jobSkills)
 
 }
