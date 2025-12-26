@@ -5,26 +5,33 @@ import { AppContext } from "../../context/appContext"
 import { getJobListings } from "../../services/axiosService"
 import { panic } from "../../utils/helpers"
 import { Modal } from "../../components/modal/modal"
+import { useState } from "react"
 
 export const Dashboard = () => {
 
-    const appContext = useContext(AppContext)
-    const {jobListings, setJobListings} = appContext
+    const [isJobListingModalOpen, setIsJobListingModalOpen] = useState<boolean>(false)
 
-    useEffect(()=>{
+    const appContext = useContext(AppContext)
+    const { jobListings, setJobListings } = appContext
+
+    useEffect(() => {
 
         getJobListings()
-        .then((listings)=>{
-            setJobListings(listings)
-        })
-        .catch(()=>{
-            panic("failed to retrieve job listings!")
-        })
+            .then((listings) => {
+                setJobListings(listings)
+            })
+            .catch(() => {
+                panic("failed to retrieve job listings!")
+            })
 
-    },[])
+    }, [])
+
+    const toggleModalHandler = (state: boolean) => {
+        setIsJobListingModalOpen(state)
+    }
 
     const generateJobListingCards = () => {
-        return jobListings.map( (listing, idx) => <JobListingCard jobListing={listing} key={idx}/>)
+        return jobListings.map((listing, idx) => <JobListingCard jobListing={listing} key={idx} />)
     }
 
     return <main>
@@ -33,8 +40,12 @@ export const Dashboard = () => {
             <div className="listings-section__drawer">
                 {generateJobListingCards()}
             </div>
-            <button className='listings-section__button'>Create Job Listing</button>
-            <Modal isOpen={true} title={"Create Job Listing"}>
+            <button className='listings-section__button' onClick={() => {
+                toggleModalHandler(true)
+            }}>Create Job Listing</button>
+            <Modal isOpen={isJobListingModalOpen} title={"Create Job Listing"} closeHandler={() => {
+                toggleModalHandler(false)
+            }}>
                 <div>lmao</div>
             </Modal>
         </section>
