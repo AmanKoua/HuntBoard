@@ -6,6 +6,7 @@ import { getJobListings } from "../../services/axiosService"
 import { panic } from "../../utils/helpers"
 import { Modal } from "../../components/modal/modal"
 import { useState } from "react"
+import { CreateJobListingContent } from "../../components/createJobListingContent/CreateJobListingContent"
 
 export const Dashboard = () => {
 
@@ -42,11 +43,14 @@ export const Dashboard = () => {
             </div>
             <button className='listings-section__button' onClick={() => {
                 toggleModalHandler(true)
-            }}>Create Job Listing</button>
+            }}>
+                Create Job Listing
+            </button>
+
             <Modal isOpen={isJobListingModalOpen} title={"Create Job Listing"} closeHandler={() => {
                 toggleModalHandler(false)
             }}>
-                <div>lmao</div>
+                <CreateJobListingContent/>
             </Modal>
         </section>
     </main>
