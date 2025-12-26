@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/AmanKoua/huntboard/controllers/contact"
 	"github.com/AmanKoua/huntboard/controllers/jobListing"
 	"github.com/AmanKoua/huntboard/controllers/jobTitles"
 	"github.com/AmanKoua/huntboard/controllers/profile"
@@ -19,10 +20,12 @@ func main() {
 	profileController := profile.NewController(dbService)
 	jobTitlesController := jobTitles.NewController(dbService)
 	jobListingController := jobListing.NewController(dbService)
+	contactController := contact.NewController(dbService)
 
 	profileController.Register(app)
 	jobTitlesController.Register(app)
 	jobListingController.Register(app)
+	contactController.Register(app)
 
 	app.Listen(":8080")
 }

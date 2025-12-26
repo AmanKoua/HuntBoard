@@ -49,12 +49,23 @@ func initializeDbConnection() *gorm.DB {
 
 func autoMigrateModels(db *gorm.DB) {
 
-	err := db.AutoMigrate(&entity.Profile{})
-	err = db.AutoMigrate(&entity.JobTitle{})
-	err = db.AutoMigrate(&entity.JobListing{})
-	err = db.AutoMigrate(&entity.JobSkill{})
+	if err := db.AutoMigrate(&entity.Profile{}); err != nil {
+		panic(err)
+	}
 
-	if err != nil {
+	if err := db.AutoMigrate(&entity.JobTitle{}); err != nil {
+		panic(err)
+	}
+
+	if err := db.AutoMigrate(&entity.JobListing{}); err != nil {
+		panic(err)
+	}
+
+	if err := db.AutoMigrate(&entity.JobSkill{}); err != nil {
+		panic(err)
+	}
+
+	if err := db.AutoMigrate(&entity.Contact{}); err != nil {
 		panic(err)
 	}
 

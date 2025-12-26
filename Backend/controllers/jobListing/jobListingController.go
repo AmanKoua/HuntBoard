@@ -58,7 +58,6 @@ func (this *JobListingController) createJobListing(c *fiber.Ctx) error {
 
 	profile := c.Locals("profile").(entity.Profile)
 
-	jobListing := entity.JobListing{}
 	createJobListingRequest := request.CreateJobListingRequest{}
 
 	if err := c.BodyParser(&createJobListingRequest); err != nil {
@@ -75,15 +74,17 @@ func (this *JobListingController) createJobListing(c *fiber.Ctx) error {
 		})
 	}
 
-	jobListing.ProfileId = profile.Id
-	jobListing.Company = createJobListingRequest.Company
-	jobListing.LocationType = createJobListingRequest.LocationType
-	jobListing.Link = createJobListingRequest.Link
-	jobListing.PostingDate = createJobListingRequest.PostingDate
-	jobListing.NumInterviews = createJobListingRequest.NumInterviews
-	jobListing.NumInterviewsCompleted = createJobListingRequest.NumInterviewsCompleted
-	jobListing.Salary = createJobListingRequest.Salary
-	jobListing.Status = createJobListingRequest.Status
+	jobListing := entity.JobListing{
+		ProfileId:              profile.Id,
+		Company:                createJobListingRequest.Company,
+		LocationType:           createJobListingRequest.LocationType,
+		Link:                   createJobListingRequest.Link,
+		PostingDate:            createJobListingRequest.PostingDate,
+		NumInterviews:          createJobListingRequest.NumInterviews,
+		NumInterviewsCompleted: createJobListingRequest.NumInterviewsCompleted,
+		Salary:                 createJobListingRequest.Salary,
+		Status:                 createJobListingRequest.Status,
+	}
 
 	tx := this.dbService.Db.Save(&jobListing)
 
