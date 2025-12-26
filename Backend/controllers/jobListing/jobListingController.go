@@ -4,7 +4,6 @@ import (
 	"github.com/AmanKoua/huntboard/middleware"
 	"github.com/AmanKoua/huntboard/models/entity"
 	"github.com/AmanKoua/huntboard/models/request"
-	"github.com/AmanKoua/huntboard/request"
 	"github.com/AmanKoua/huntboard/services/db"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -26,6 +25,7 @@ func (this *JobListingController) Register(app *fiber.App) {
 	jobListing.Use(this.verifyProfileWrapper)
 
 	jobListing.Get("/", this.getJobListing)
+	jobListing.Post("/create", this.createJobListing)
 
 }
 
@@ -78,6 +78,7 @@ func (this *JobListingController) createJobListing(c *fiber.Ctx) error {
 	jobListing.PostingDate = createJobListingRequest.PostingDate
 	jobListing.NumInterviews = createJobListingRequest.NumInterviews
 	jobListing.NumInterviewsCompleted = createJobListingRequest.NumInterviewsCompleted
+	jobListing.Salary = createJobListingRequest.Salary
 	jobListing.Status = createJobListingRequest.Status
 
 	tx := this.dbService.Db.Save(&jobListing)

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/AmanKoua/huntboard/controllers/jobListing"
 	"github.com/AmanKoua/huntboard/controllers/jobTitles"
 	"github.com/AmanKoua/huntboard/controllers/profile"
 	"github.com/AmanKoua/huntboard/services/db"
@@ -21,9 +22,11 @@ func main() {
 
 	profileController := profile.NewController(dbService)
 	jobTitlesController := jobTitles.NewController(dbService)
+	jobListingController := jobListing.NewController(dbService)
 
 	profileController.Register(app)
 	jobTitlesController.Register(app)
+	jobListingController.Register(app)
 
 	app.Listen(":8080")
 }
