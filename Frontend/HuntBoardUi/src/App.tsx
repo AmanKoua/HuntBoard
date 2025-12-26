@@ -12,8 +12,8 @@ function App() {
 
     return <>
         <AppContext.Provider value={defaultAppContext}>
-            <Header />
             <BrowserRouter>
+                <Header />
                 <Routes>
                     <Route index element={<ProfileSelector />} />
                     <Route path="/dashboard" element={<Dashboard />} />

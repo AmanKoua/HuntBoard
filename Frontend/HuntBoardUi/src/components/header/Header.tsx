@@ -5,5 +5,8 @@ export const Header = () => {
         <p className="title">
             HuntBoard
         </p>
+        <button>
+            Profile
+        </button>
     </header>
 }

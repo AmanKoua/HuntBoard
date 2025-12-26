@@ -1,5 +1,6 @@
 header {
   position: sticky;
+  display:flex;
   top: 0;
   //background-color: red;
   border-bottom: 1px solid lightgray;
@@ -13,5 +14,18 @@ header {
     font-size: 2rem;
     font-weight: 600;
   }
+
+
+  button {
+    background:none;
+    border: 1px solid gray;
+    border-radius: .25rem;
+    
+    &:hover{
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      background-color: rgb(207, 212, 252); 
+    }
+
+    }
 
 }
