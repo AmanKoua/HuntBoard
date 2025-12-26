@@ -1,11 +1,6 @@
 import "./profileCard.scss"
+import type { Profile } from "../../utils/types";
 
-export interface Profile {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-}
 
 interface IProfileCard  {
     profiles: Profile[]
