@@ -1,5 +1,6 @@
 import type { JobListing } from "../../utils/types"
 import "./JobListingCard.scss"
+import { jobStatusDict } from "../../utils/types"
 
 export interface IJobListingCard {
     jobListing: JobListing
@@ -15,28 +16,32 @@ const getProgressString = (jobListing: JobListing): string => {
 
 }
 
+const getStatusModifier = (jobListing: JobListing): string => {
+    return `listing-card__secondary-info--${jobStatusDict[jobListing.status as keyof typeof jobStatusDict]}`
+}
+
 export const JobListingCard = ({ jobListing }: IJobListingCard) => {
 
     return <div className="listing-card">
         <div className='listing-card__primary-info'>
-            <p>
+            <p className='item'>
                 <strong>Company: </strong> {jobListing.company}
             </p>    
-            <p>
+            <p className='item'>
                 <strong>Level: </strong> {jobListing.level}
             </p>   
-            <p>
+            <p className='item'>
                 <strong>Salary: </strong> ${jobListing.salary}
             </p>   
         </div> 
         <div className='listing-card__secondary-info'>
-            <p>
+            <p className='item'>
                 <strong>Location: </strong> {jobListing.locationType}
             </p>    
-            <p>
+            <p className='item'>
                 <strong>Progress: </strong> {getProgressString(jobListing)}
             </p>   
-            <p>
+            <p className={`item ${getStatusModifier(jobListing)}`}>
                 <strong>Status: </strong> {jobListing.status}
             </p>   
         </div> 

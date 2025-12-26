@@ -13,6 +13,40 @@
         flex-direction: row;
         justify-content: space-evenly;
         // background-color: blue;
+
+        .item {
+            padding: .25rem;
+            border-radius: .5rem;
+        }
+
+        &--accepted {
+            background-color: mix(white, green, 50%);
+        }
+
+        &--declined {
+            background-color: mix(white, red, 50%);
+        }
+
+        &--rejected {
+            background-color: mix(white, red, 50%);
+        }
+
+        &--interviewing {
+            background-color: mix(white, yellow, 50%);
+        }
+
+        &--ghosted {
+            background-color: mix(white, black, 50%);
+        }
+
+        &--not-applied {
+            background-color: mix(white, purple, 50%);
+        }
+
+        &--offer-received {
+            background-color: mix(white, blue, 50%);
+        }
+
     }
 
     &:hover {
