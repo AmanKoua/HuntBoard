@@ -1,6 +1,7 @@
 package jobTitles
 
 import (
+	"github.com/AmanKoua/huntboard/middleware"
 	"github.com/AmanKoua/huntboard/models/entity"
 	"github.com/AmanKoua/huntboard/models/request"
 	"github.com/AmanKoua/huntboard/services/db"
@@ -21,33 +22,13 @@ func NewController(db *db.Service) *JobTitleController {
 func (this *JobTitleController) Register(app *fiber.App) {
 	profile := app.Group("/job-title")
 
-	profile.Use(this.verifyProfile)
+	profile.Use(this.verifyProfileWrapper)
 	profile.Get("/", this.getJobTitles)
 	profile.Put("/create", this.attachJobTitles)
 }
 
-func (this *JobTitleController) verifyProfile(c *fiber.Ctx) error { // TODO : refactor middleware, to make it reusable
-
-	profileId := c.Get("profileId")
-
-	if len(profileId) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "profileId header was unexpectedly missing or malformed",
-		})
-	}
-
-	profile := entity.Profile{}
-	tx := this.dbService.Db.Find(&profile, "id = ?", profileId)
-
-	if tx.Error != nil || tx.RowsAffected == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "could not find profile with ID: " + profileId,
-		})
-	}
-
-	c.Locals("profile", profile)
-	return c.Next()
-
+func (this *JobTitleController) verifyProfileWrapper(c *fiber.Ctx) error {
+	return middleware.VerifyProfile(c, this.dbService)
 }
 
 func (this *JobTitleController) getJobTitles(c *fiber.Ctx) error {
