@@ -23,7 +23,6 @@ export interface JobListing {
 }
 
 export const jobStatusDict = {
-    // accepted, declined, rejected, interviewing, ghosted, not applied, offer received
     "accepted":"accepted",
     "declined":"declined",
     "rejected":"rejected",
