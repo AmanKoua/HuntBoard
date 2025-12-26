@@ -69,4 +69,8 @@ func autoMigrateModels(db *gorm.DB) {
 		panic(err)
 	}
 
+	if err := db.AutoMigrate(&entity.Note{}); err != nil {
+		panic(err)
+	}
+
 }

@@ -28,8 +28,11 @@ func (this *JobListingController) Register(app *fiber.App) {
 
 	jobListing.Get("/", this.getJobListing)
 	jobListing.Post("/create", this.createJobListing)
-	jobListing.Put("/skills", this.attachJobSkills)
+	jobListing.Post("/skills", this.attachJobSkills)
 	jobListing.Get("/skills/:jobListingId", this.getJobSkills)
+
+	jobListing.Post("/notes", this.attachJobNotes)
+	jobListing.Get("/notes", this.getJobListingNotes)
 
 }
 
@@ -181,5 +184,101 @@ func (this *JobListingController) getJobSkills(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(jobSkills)
+
+}
+
+func (this *JobListingController) attachJobNotes(c *fiber.Ctx) error {
+	attachNoteRequest := request.AttachNoteRequest{}
+	jobListing := entity.JobListing{}
+
+	if err := c.BodyParser(&attachNoteRequest); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "unable to parse note attachment request",
+		})
+	}
+
+	if err := this.validator.Struct(attachNoteRequest); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "note attachment request failed validations",
+		})
+	}
+
+	tx := this.dbService.Db.Find(&jobListing, "id = ?", attachNoteRequest.JobListingId)
+
+	if tx.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "unable to retrieve job listing",
+		})
+	}
+
+	if tx.RowsAffected == 0 {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": "unable to find job lsiting with provided id",
+		})
+	}
+
+	note := entity.Note{
+		JobListingId: attachNoteRequest.JobListingId,
+		Content:      attachNoteRequest.Content,
+	}
+
+	tx = this.dbService.Db.Save(&note)
+
+	if tx.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "unable to persist job listing note",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "successfully added job listing note",
+	})
+
+}
+
+func (this *JobListingController) getJobListingNotes(c *fiber.Ctx) error {
+
+	jobListingIdParam := c.Query("jobListingId")
+
+	if len(jobListingIdParam) == 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "jobListingId query param is missing",
+		})
+	}
+
+	jobListingId, err := strconv.Atoi(jobListingIdParam)
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "cannot convert jobListingId query param to int",
+		})
+	}
+
+	jobListing := entity.JobListing{}
+	tx := this.dbService.Db.Find(&jobListing, "id = ?", int64(jobListingId))
+
+	if tx.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "failure checking job listing existence",
+		})
+	}
+
+	if tx.RowsAffected == 0 {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": "no job listing found for provided Id",
+		})
+
+	}
+
+	notes := []entity.Note{}
+	tx = this.dbService.Db.Find(&notes, "job_listing_id = ?", jobListingId)
+
+	if tx.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "unable to retieve notes for provided job listing id",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(notes)
 
 }
