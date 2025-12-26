@@ -77,7 +77,7 @@ func (this *ContactController) createContact(c *fiber.Ctx) error {
 
 func (this *ContactController) attachJobListing(c *fiber.Ctx) error {
 
-	contactIdParam, jobListingidParam := c.Params("contactId"), c.Params("jobListingId")
+	contactIdParam, jobListingidParam := c.Query("contactId"), c.Query("jobListingId")
 
 	if len(contactIdParam) == 0 || len(jobListingidParam) == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -99,7 +99,7 @@ func (this *ContactController) attachJobListing(c *fiber.Ctx) error {
 
 	tx := this.dbService.Db.Find(&contact, "id = ?", int64(contactId))
 
-	if tx.Error != nil {
+	if tx.Error != nil || tx.RowsAffected == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"error": "unable to find contact with provided id",
 		})
@@ -107,7 +107,7 @@ func (this *ContactController) attachJobListing(c *fiber.Ctx) error {
 
 	tx = this.dbService.Db.Find(&jobListing, "id = ?", int64(jobListingId))
 
-	if tx.Error != nil {
+	if tx.Error != nil || tx.RowsAffected == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"error": "unable to find job listing with provided id",
 		})
