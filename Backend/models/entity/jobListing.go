@@ -12,7 +12,3 @@ type JobListing struct {
 	Salary                 int64  `json:"salary"`
 	Status                 string `json:"status" gorm:"not null; size: 255"` // accepted, declined, rejected, ghosted, not applied, offer received
 }
-
-/*
-	Contacts, Job skills, and notes will be other relations, tied to this via the Id foreign key
-*/
