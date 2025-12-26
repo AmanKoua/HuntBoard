@@ -5,6 +5,8 @@ import {createProfile, getProfiles} from "../../services/axiosService.ts";
 import {ProfileCreationCard} from "../../components/profileCreationCard/profileCreationCard.tsx";
 import { useNavigate } from "react-router";
 
+
+// TODO : refactor this sloppy code
 export const ProfileSelector = () => {
 
         const [profiles, setProfiles] = useState<Profile[]>([])

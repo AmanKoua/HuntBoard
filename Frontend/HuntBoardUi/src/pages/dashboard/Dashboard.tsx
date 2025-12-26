@@ -4,6 +4,7 @@ import "./Dashboard.scss"
 import { AppContext } from "../../context/appContext"
 import { getJobListings } from "../../services/axiosService"
 import { panic } from "../../utils/helpers"
+import { Modal } from "../../components/modal/modal"
 
 export const Dashboard = () => {
 
@@ -32,6 +33,10 @@ export const Dashboard = () => {
             <div className="listings-section__drawer">
                 {generateJobListingCards()}
             </div>
+            <button className='listings-section__button'>Create Job Listing</button>
+            <Modal isOpen={true}>
+                <div>lmao</div>
+            </Modal>
         </section>
     </main>
 
