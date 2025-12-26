@@ -34,7 +34,7 @@ export const Dashboard = () => {
                 {generateJobListingCards()}
             </div>
             <button className='listings-section__button'>Create Job Listing</button>
-            <Modal isOpen={true}>
+            <Modal isOpen={true} title={"Create Job Listing"}>
                 <div>lmao</div>
             </Modal>
         </section>

@@ -1,0 +1,27 @@
+dialog {
+    margin: auto;
+    width: 50rem;
+    height: 50rem;
+    border: 1px solid gray;
+    border-radius: .25rem;
+
+    .close-button {
+        height: max-content;
+        background: none;
+        border: 1px solid gray;
+        border-radius: .25rem;
+
+        &:hover {
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            background-color: rgb(207, 212, 252);
+        }
+    }
+
+    .header {
+        // background-color: red;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+}

@@ -1,6 +1,5 @@
 export type SetState<T> =  React.Dispatch<React.SetStateAction<T>>
 
-
 export interface Profile {
     id: number;
     firstName: string;

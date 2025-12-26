@@ -1,7 +1,6 @@
 import "./profileCard.scss"
 import type { Profile } from "../../utils/types";
 
-
 interface IProfileCard  {
     profiles: Profile[]
     selectProfile : (val: Profile) => void;
