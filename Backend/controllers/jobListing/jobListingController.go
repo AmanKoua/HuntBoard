@@ -85,6 +85,7 @@ func (this *JobListingController) createJobListing(c *fiber.Ctx) error {
 		PostingDate:            createJobListingRequest.PostingDate,
 		NumInterviews:          createJobListingRequest.NumInterviews,
 		NumInterviewsCompleted: createJobListingRequest.NumInterviewsCompleted,
+		Level:                  createJobListingRequest.Level,
 		Salary:                 createJobListingRequest.Salary,
 		Status:                 createJobListingRequest.Status,
 	}
