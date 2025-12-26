@@ -3,14 +3,16 @@ import {type Profile, ProfileCard} from "../../components/profileCard/profileCar
 import {useEffect, useState} from "react";
 import {createProfile, getProfiles} from "../../services/axiosService.ts";
 import {ProfileCreationCard} from "../../components/profileCreationCard/profileCreationCard.tsx";
+import { useNavigate } from "react-router";
 
 export const ProfileSelector = () => {
 
         const [profiles, setProfiles] = useState<Profile[]>([])
-        const [isSelectingProfile, setIsSelectingProfile] = useState(true);
+        const [isSelectingProfile, setIsSelectingProfile] = useState(true)
         const [firstName, setFirstName] = useState('')
         const [lastName, setLastName] = useState('')
         const [email, setEmail] = useState('')
+        const navigate = useNavigate()
 
         const toggleSelectingProfile = ()=>{
                 setIsSelectingProfile((val) => !val)
@@ -34,6 +36,7 @@ export const ProfileSelector = () => {
 
         const selectProfile = (profile: Profile) => {
                 localStorage.setItem("profile", JSON.stringify(profile))
+                navigate("/dashboard")
         }
 
         useEffect(() => {
