@@ -22,13 +22,15 @@ export const Dashboard = () => {
 
     },[])
 
+    const generateJobListingCards = () => {
+        return jobListings.map( (listing, idx) => <JobListingCard jobListing={listing} key={idx}/>)
+    }
+
     return <main>
         <section className="listings-section">
             <h2>Job Listings</h2>
             <div className="listings-section__drawer">
-                <JobListingCard/>
-                <JobListingCard/>
-                <JobListingCard/>
+                {generateJobListingCards()}
             </div>
         </section>
     </main>

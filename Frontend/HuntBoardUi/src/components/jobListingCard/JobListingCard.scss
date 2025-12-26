@@ -1,7 +1,22 @@
 .listing-card {
     // background-color: green;
+
+    font-size: 1.25rem;
+
     border: 1px solid gray;
     border-radius: .25rem;
     padding: .5rem;
     margin-bottom: .3rem;
+
+    &__primary-info, &__secondary-info {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        // background-color: blue;
+    }
+
+    &:hover {
+        background-color: mix(black, white, 10%);
+    }
+
 }

@@ -1,6 +1,5 @@
 .listings-section {
 
-
     display: flex;
     flex-direction: column;
     // background-color: red;
@@ -13,6 +12,10 @@
         padding: .75rem;
         // background-color: blue;
         width: max-content;
+    }
+
+    &__drawer {
+        // background-color: red;
     }
     
 }
