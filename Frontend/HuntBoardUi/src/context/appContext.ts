@@ -3,7 +3,7 @@ import type { JobListing, SetState } from "../utils/types";
 
 export interface IAppContext {
     jobListings: JobListing[]
-    setJobListings: SetState<JobListing>
+    setJobListings: SetState<JobListing[]>
 }
 
-export const AppContext = createContext({})
+export const AppContext = createContext({} as IAppContext)
