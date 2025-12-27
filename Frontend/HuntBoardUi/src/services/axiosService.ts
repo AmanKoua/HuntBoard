@@ -22,3 +22,9 @@ export const getJobListings = async () => {
     return response.data as JobListing[]
 
 }
+
+export const createJobListing = async (requestBody: any) => {
+    await axios.post("http://localhost:8080/job-listing/create", requestBody, {
+        headers: {profileId: getLocalProfile().id}
+    })
+}

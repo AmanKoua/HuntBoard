@@ -13,12 +13,25 @@ export const CreateJobListingContent = () => {
     const [jobLevel, setJobLevel] = useState("")
     const [status, setStatus] = useState("")
 
+    const [company, setCompany] = useState("")
+    const [link, setLink] = useState("")
+    const [postingDate, setPostingDate] = useState("")
+    const [interviews, setInterviews] = useState("")
+    const [interviewsCompleted, setInterviewsCompleted] = useState("")
+    const [salary, setSalary] = useState("");
+
+    const getChangeHandler = (setterFunc: (val: string) => void) => {
+        return (e: React.ChangeEvent<HTMLInputElement>) => {
+            setterFunc(e.target.value)
+        }
+    }
+
     return <div className='modal-content'>
         <div className='modal-content__input-row'>
             <p>
                <strong>Company : </strong> 
             </p>
-            <input/>
+            <input onChange={getChangeHandler(setCompany)}/>
         </div>
 
         <div className='modal-content__input-row'>
@@ -32,28 +45,28 @@ export const CreateJobListingContent = () => {
             <p>
                <strong>Link : </strong> 
             </p>
-            <input/>
+            <input onChange={getChangeHandler(setLink)}/>
         </div> 
 
          <div className='modal-content__input-row'>
             <p>
                <strong>Posting Date : </strong> 
             </p>
-            <input placeholder="MM/DD/YYYY"/>
+            <input  onChange={getChangeHandler(setPostingDate)} placeholder="MM/DD/YYYY"/>
         </div> 
 
         <div className='modal-content__input-row'>
             <p>
                <strong>Interviews : </strong> 
             </p>
-            <input/>
+            <input  onChange={getChangeHandler(setInterviews)}/>
         </div> 
 
         <div className='modal-content__input-row'>
             <p>
                <strong>Interviews Completed : </strong> 
             </p>
-            <input/>
+            <input  onChange={getChangeHandler(setInterviewsCompleted)}/>
         </div> 
 
         <div className='modal-content__input-row'>
@@ -67,7 +80,7 @@ export const CreateJobListingContent = () => {
             <p>
                <strong>Salary : </strong> 
             </p>
-            <input placeholder="100,000"/>
+            <input  onChange={getChangeHandler(setSalary)} placeholder="100,000"/>
         </div> 
 
 
