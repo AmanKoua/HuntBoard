@@ -2,6 +2,7 @@ import { SelectorRow } from "../selectorRow/SelectorRow"
 import { useState } from "react"
 import "./CreateJobListingContent.scss"
 import { jobLevelDict, jobLocationDict, jobStatusDict } from "../../utils/types"
+import { createJobListing } from "../../services/axiosService"
 
 export const CreateJobListingContent = () => {
 
@@ -26,70 +27,92 @@ export const CreateJobListingContent = () => {
         }
     }
 
+    const crateJobListingHandler = () => {
+
+        // TODO : input sanitization?
+
+        const requestBody = {
+            comapny: company,
+            locationType: location,
+            link: link,
+            postingDate: postingDate,
+            numInterviews: interviews,
+            numInterviewsCompleted: interviewsCompleted,
+            level: jobLevel,
+            salary: salary,
+            status: status
+        }
+
+        createJobListing(requestBody)
+
+        // TODO : set banner / info banner message
+
+    }
+
     return <div className='modal-content'>
         <div className='modal-content__input-row'>
             <p>
-               <strong>Company : </strong> 
+                <strong>Company : </strong>
             </p>
-            <input onChange={getChangeHandler(setCompany)}/>
+            <input onChange={getChangeHandler(setCompany)} />
         </div>
 
         <div className='modal-content__input-row'>
             <p>
-               <strong>Location : </strong> 
+                <strong>Location : </strong>
             </p>
-            <SelectorRow value={location} setValue={setLocation} options={jobLocationOptions}/>
+            <SelectorRow value={location} setValue={setLocation} options={jobLocationOptions} />
         </div>
 
         <div className='modal-content__input-row'>
             <p>
-               <strong>Link : </strong> 
+                <strong>Link : </strong>
             </p>
-            <input onChange={getChangeHandler(setLink)}/>
-        </div> 
-
-         <div className='modal-content__input-row'>
-            <p>
-               <strong>Posting Date : </strong> 
-            </p>
-            <input  onChange={getChangeHandler(setPostingDate)} placeholder="MM/DD/YYYY"/>
-        </div> 
+            <input onChange={getChangeHandler(setLink)} />
+        </div>
 
         <div className='modal-content__input-row'>
             <p>
-               <strong>Interviews : </strong> 
+                <strong>Posting Date : </strong>
             </p>
-            <input  onChange={getChangeHandler(setInterviews)}/>
-        </div> 
+            <input onChange={getChangeHandler(setPostingDate)} placeholder="MM/DD/YYYY" />
+        </div>
 
         <div className='modal-content__input-row'>
             <p>
-               <strong>Interviews Completed : </strong> 
+                <strong>Interviews : </strong>
             </p>
-            <input  onChange={getChangeHandler(setInterviewsCompleted)}/>
-        </div> 
+            <input onChange={getChangeHandler(setInterviews)} />
+        </div>
 
         <div className='modal-content__input-row'>
             <p>
-               <strong>Job level : </strong> 
+                <strong>Interviews Completed : </strong>
             </p>
-            <SelectorRow value={jobLevel} setValue={setJobLevel} options={jobLevelOptions}/>
-        </div> 
+            <input onChange={getChangeHandler(setInterviewsCompleted)} />
+        </div>
 
         <div className='modal-content__input-row'>
             <p>
-               <strong>Salary : </strong> 
+                <strong>Job level : </strong>
             </p>
-            <input  onChange={getChangeHandler(setSalary)} placeholder="100,000"/>
-        </div> 
+            <SelectorRow value={jobLevel} setValue={setJobLevel} options={jobLevelOptions} />
+        </div>
+
+        <div className='modal-content__input-row'>
+            <p>
+                <strong>Salary : </strong>
+            </p>
+            <input onChange={getChangeHandler(setSalary)} placeholder="100,000" />
+        </div>
 
 
         <div className='modal-content__input-row'>
             <p>
-               <strong>Status : </strong> 
+                <strong>Status : </strong>
             </p>
-            <SelectorRow value={status} setValue={setStatus} options={jobStatusOptions}/>
-        </div> 
+            <SelectorRow value={status} setValue={setStatus} options={jobStatusOptions} />
+        </div>
 
         <button className='modal-content__button'>Create Job Listing</button>
 
