@@ -21,6 +21,11 @@ export interface JobListing {
     status: string;
 }
 
+export interface AlertBannerData {
+    message: string;
+    type: 'info' | "alert";
+}
+
 export const jobStatusDict = {
     "Accepted":"accepted",
     "Declined":"declined",

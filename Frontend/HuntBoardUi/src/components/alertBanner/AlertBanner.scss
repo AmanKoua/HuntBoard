@@ -1,0 +1,40 @@
+    .banner {
+
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    font-weight:700;
+
+    z-index: 5;
+    // opacity:90%;
+
+    &--hidden {
+        display:none
+    }
+
+    &--alert {
+        background-color: mix(red,black,100%)
+    }
+
+    &--info {
+        background-color: blue;
+    }
+
+    &__close-button {
+
+
+        color: white;
+        margin: auto 0 auto auto;
+        height: max-content;
+        background: none;
+        border: 1px solid gray;
+        border-radius: .25rem;
+
+        &:hover {
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            background-color: rgb(207, 212, 252);
+        }
+    }
+
+
+  }

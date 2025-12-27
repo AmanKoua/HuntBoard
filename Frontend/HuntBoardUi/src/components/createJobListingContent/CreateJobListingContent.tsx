@@ -1,8 +1,9 @@
 import { SelectorRow } from "../selectorRow/SelectorRow"
-import { useState } from "react"
+import { useState, useContext } from "react"
 import "./CreateJobListingContent.scss"
 import { jobLevelDict, jobLocationDict, jobStatusDict } from "../../utils/types"
 import { createJobListing } from "../../services/axiosService"
+import { AppContext } from "../../context/appContext"
 
 export const CreateJobListingContent = () => {
 
@@ -21,6 +22,8 @@ export const CreateJobListingContent = () => {
     const [interviewsCompleted, setInterviewsCompleted] = useState("")
     const [salary, setSalary] = useState("");
 
+    const {setIsAlertBannerOpen,setAlertBannerData} = useContext(AppContext)
+
     const getChangeHandler = (setterFunc: (val: string) => void) => {
         return (e: React.ChangeEvent<HTMLInputElement>) => {
             setterFunc(e.target.value)
@@ -28,24 +31,38 @@ export const CreateJobListingContent = () => {
     }
 
     const crateJobListingHandler = () => {
-
         // TODO : input sanitization?
 
         const requestBody = {
-            comapny: company,
+            company: company,
             locationType: location,
             link: link,
             postingDate: postingDate,
-            numInterviews: interviews,
-            numInterviewsCompleted: interviewsCompleted,
+            numInterviews: Number(interviews),
+            numInterviewsCompleted: Number(interviewsCompleted),
             level: jobLevel,
-            salary: salary,
+            salary: Number(salary),
             status: status
         }
 
-        createJobListing(requestBody)
+        createJobListing(requestBody).then(() => {
 
-        // TODO : set banner / info banner message
+            setAlertBannerData({
+                message: "Job listing created successfully!",
+                type: "info"
+            })
+            setIsAlertBannerOpen(true)
+
+
+        }).catch((e) => {
+
+            setAlertBannerData({
+                message: "Job listing creation failed : " + e,
+                type: "alert"
+            })
+            setIsAlertBannerOpen(true)
+
+        })
 
     }
 
@@ -114,7 +131,7 @@ export const CreateJobListingContent = () => {
             <SelectorRow value={status} setValue={setStatus} options={jobStatusOptions} />
         </div>
 
-        <button className='modal-content__button'>Create Job Listing</button>
+        <button className='modal-content__button' onClick={() => { crateJobListingHandler() }}>Create Job Listing</button>
 
     </div>
 }

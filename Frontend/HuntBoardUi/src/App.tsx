@@ -5,6 +5,7 @@ import { Header } from "./components/header/Header.tsx";
 import { Dashboard } from "./pages/dashboard/Dashboard.tsx";
 import { AppContext } from "./context/appContext.ts";
 import { useDefaultAppContext } from "./hooks/useDefaultAppContext.ts";
+import { AlertBanner } from "./components/alertBanner/AlertBanner.tsx";
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
         <AppContext.Provider value={defaultAppContext}>
             <BrowserRouter>
                 <Header />
+                <AlertBanner/>
                 <Routes>
                     <Route index element={<ProfileSelector />} />
                     <Route path="/dashboard" element={<Dashboard />} />
