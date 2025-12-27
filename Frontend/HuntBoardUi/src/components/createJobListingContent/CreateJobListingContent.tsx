@@ -5,7 +5,11 @@ import { jobLevelDict, jobLocationDict, jobStatusDict } from "../../utils/types"
 import { createJobListing } from "../../services/axiosService"
 import { AppContext } from "../../context/appContext"
 
-export const CreateJobListingContent = () => {
+export interface ICreateJobListingContent {
+    closeModalhandler: () => void;
+}
+
+export const CreateJobListingContent = ({closeModalhandler}: ICreateJobListingContent) => {
 
     const jobLocationOptions = Object.keys(jobLocationDict)
     const jobStatusOptions = Object.keys(jobStatusDict)
@@ -62,6 +66,8 @@ export const CreateJobListingContent = () => {
             })
             setIsAlertBannerOpen(true)
 
+        }).finally(() => {
+            closeModalhandler()
         })
 
     }

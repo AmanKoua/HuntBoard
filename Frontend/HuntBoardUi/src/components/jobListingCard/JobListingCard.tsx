@@ -17,7 +17,8 @@ const getProgressString = (jobListing: JobListing): string => {
 }
 
 const getStatusModifier = (jobListing: JobListing): string => {
-    return `listing-card__secondary-info--${jobListing.status}`
+    // TODO : stopped here. Standardize the names to unfuck this!
+    return `listing-card__secondary-info--${jobStatusDict[jobListing.status as keyof typeof jobStatusDict]}`
 }
 
 export const JobListingCard = ({ jobListing }: IJobListingCard) => {

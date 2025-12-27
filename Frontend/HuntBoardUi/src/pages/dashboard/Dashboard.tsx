@@ -31,6 +31,10 @@ export const Dashboard = () => {
         setIsJobListingModalOpen(state)
     }
 
+    const closeModalHandler = () => {
+            toggleModalHandler(false)
+    }
+
     const generateJobListingCards = () => {
         return jobListings.map((listing, idx) => <JobListingCard jobListing={listing} key={idx} />)
     }
@@ -47,10 +51,8 @@ export const Dashboard = () => {
                 Create Job Listing
             </button>
 
-            <Modal isOpen={isJobListingModalOpen} title={"Create Job Listing"} closeHandler={() => {
-                toggleModalHandler(false)
-            }}>
-                <CreateJobListingContent/>
+            <Modal isOpen={isJobListingModalOpen} title={"Create Job Listing"} closeHandler={closeModalHandler}>
+                <CreateJobListingContent closeModalhandler={closeModalHandler}/>
             </Modal>
         </section>
     </main>
