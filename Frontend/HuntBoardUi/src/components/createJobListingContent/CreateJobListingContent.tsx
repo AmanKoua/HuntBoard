@@ -1,12 +1,24 @@
+import { SelectorRow } from "../selectorRow/SelectorRow"
+import { useState } from "react"
 import "./CreateJobListingContent.scss"
 
 export const CreateJobListingContent = () => {
+
+    const [location, setLocation] = useState("in person")
+
     return <div className='modal-content'>
         <div className='modal-content__input-row'>
             <p>
                <strong>Company : </strong> 
             </p>
             <input/>
+        </div>
+
+        <div className='modal-content__input-row'>
+            <p>
+               <strong>Location : </strong> 
+            </p>
+            <SelectorRow/>
         </div>
 
         <div className='modal-content__input-row'>

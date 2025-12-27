@@ -4,7 +4,7 @@ import "./Dashboard.scss"
 import { AppContext } from "../../context/appContext"
 import { getJobListings } from "../../services/axiosService"
 import { panic } from "../../utils/helpers"
-import { Modal } from "../../components/modal/modal"
+import { Modal } from "../../components/modal/Modal"
 import { useState } from "react"
 import { CreateJobListingContent } from "../../components/createJobListingContent/CreateJobListingContent"
 
