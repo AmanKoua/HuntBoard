@@ -9,12 +9,16 @@ export interface ISelectorRow {
     setValue: SetState<string>;
 }
 
-const generateRowItems = (options: string[]) => {
-    return options.map(option => <button className="selector-row__item">{option}</button>)
+const generateRowItems = (value: string, options: string[], setValue: SetState<string>) => {
+    return options.map((option, idx) => <button className={`selector-row__item ${option === value ? 'selected' : ''}`} key={idx} onClick={(e)=>{
+        setValue(option)
+    }}>
+        {option}
+    </button>)
 }
 
 export const SelectorRow = ({value, setValue, options}: ISelectorRow) => {
     return <div className="selector-row">
-        {generateRowItems(options)}
+        {generateRowItems(value, options, setValue)}
     </div>
 }
