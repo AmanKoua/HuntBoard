@@ -1,8 +1,11 @@
 import { SelectorRow } from "../selectorRow/SelectorRow"
 import { useState } from "react"
 import "./CreateJobListingContent.scss"
+import { jobLocationDict } from "../../utils/types"
 
 export const CreateJobListingContent = () => {
+
+    const jobStatusOptions = Object.keys(jobLocationDict)
 
     const [location, setLocation] = useState("in person")
 
@@ -18,7 +21,7 @@ export const CreateJobListingContent = () => {
             <p>
                <strong>Location : </strong> 
             </p>
-            <SelectorRow/>
+            <SelectorRow value={location} setValue={setLocation} options={jobStatusOptions}/>
         </div>
 
         <div className='modal-content__input-row'>
@@ -42,7 +45,7 @@ export const CreateJobListingContent = () => {
             <input placeholder="100,000"/>
         </div> 
 
-        <button>Create Job Listing</button>
+        <button className='modal-content__button'>Create Job Listing</button>
 
     </div>
 }

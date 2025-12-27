@@ -22,11 +22,17 @@ export interface JobListing {
 }
 
 export const jobStatusDict = {
-    "accepted":"accepted",
-    "declined":"declined",
-    "rejected":"rejected",
-    "interviewing":"interviewing",
-    "ghosted":"ghosted",
-    "not applied": "not-applied",
-    "offer received": "offer-received"
+    "Accepted":"accepted",
+    "Declined":"declined",
+    "Rejected":"rejected",
+    "Interviewing":"interviewing",
+    "Ghosted":"ghosted",
+    "Not applied": "not-applied",
+    "Offer received": "offer-received"
+}
+
+export const jobLocationDict = {
+    "In Person":"in-person",
+    "Hybrid":"hybrid",
+    "Remote":"remote"
 }
