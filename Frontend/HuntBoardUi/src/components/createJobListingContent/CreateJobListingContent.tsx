@@ -1,13 +1,15 @@
 import { SelectorRow } from "../selectorRow/SelectorRow"
 import { useState } from "react"
 import "./CreateJobListingContent.scss"
-import { jobLocationDict } from "../../utils/types"
+import { jobLevelDict, jobLocationDict } from "../../utils/types"
 
 export const CreateJobListingContent = () => {
 
     const jobStatusOptions = Object.keys(jobLocationDict)
+    const jobLevelOptions = Object.keys(jobLevelDict)
 
-    const [location, setLocation] = useState("in person")
+    const [location, setLocation] = useState("")
+    const [jobLevel, setJobLevel] = useState("")
 
     return <div className='modal-content'>
         <div className='modal-content__input-row'>
@@ -36,6 +38,27 @@ export const CreateJobListingContent = () => {
                <strong>Posting Date : </strong> 
             </p>
             <input placeholder="MM/DD/YYYY"/>
+        </div> 
+
+        <div className='modal-content__input-row'>
+            <p>
+               <strong>Interviews : </strong> 
+            </p>
+            <input/>
+        </div> 
+
+        <div className='modal-content__input-row'>
+            <p>
+               <strong>Interviews Completed : </strong> 
+            </p>
+            <input/>
+        </div> 
+
+        <div className='modal-content__input-row'>
+            <p>
+               <strong>Job level : </strong> 
+            </p>
+            <SelectorRow value={jobLevel} setValue={setJobLevel} options={jobLevelOptions}/>
         </div> 
 
         <div className='modal-content__input-row'>

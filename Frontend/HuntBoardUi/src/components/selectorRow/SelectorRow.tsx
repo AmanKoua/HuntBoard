@@ -10,7 +10,12 @@ export interface ISelectorRow {
 }
 
 const generateRowItems = (value: string, options: string[], setValue: SetState<string>) => {
-    return options.map((option, idx) => <button className={`selector-row__item ${option === value ? 'selected' : ''}`} key={idx} onClick={(e)=>{
+
+    const getButtonClassName = (option: string): string=> {
+        return `selector-row__item ${option === value ? 'selected' : ''}`
+    }
+
+    return options.map((option, idx) => <button className={getButtonClassName(option)} key={idx} onClick={()=>{
         setValue(option)
     }}>
         {option}

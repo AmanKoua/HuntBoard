@@ -36,3 +36,11 @@ export const jobLocationDict = {
     "Hybrid":"hybrid",
     "Remote":"remote"
 }
+
+export const jobLevelDict = {
+    "Junior":"junior",
+    "Mid Senior":"mid-senior",
+    "Senior":"senior",
+    "Staff": "staff",
+    "Principal": "principal"
+}

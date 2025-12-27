@@ -17,7 +17,7 @@ const getProgressString = (jobListing: JobListing): string => {
 }
 
 const getStatusModifier = (jobListing: JobListing): string => {
-    return `listing-card__secondary-info--${jobStatusDict[jobListing.status as keyof typeof jobStatusDict]}`
+    return `listing-card__secondary-info--${jobListing.status}`
 }
 
 export const JobListingCard = ({ jobListing }: IJobListingCard) => {
