@@ -27,10 +27,20 @@ aside {
 
     }
 
-    h2 {
-        margin:auto;
-        padding: .75rem;
-        width: max-content;
+    .notes-section {
+
+        &__header {
+
+            display: flex;
+            margin-bottom: 1rem;
+            // background-color: blue;
+
+            h3 {
+                margin:auto;
+                // background-color: blue;
+            }
+        }
+
     }
 
 }
