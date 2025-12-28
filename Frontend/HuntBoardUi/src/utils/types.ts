@@ -26,6 +26,24 @@ export interface AlertBannerData {
     type: 'info' | "alert";
 }
 
+export interface ICreateJobListingRequest {
+    company: string;
+    locationType: string;
+    link: string; 
+    postingDate: string; 
+    numInterviews: number;
+    numInterviewsCompleted: number;
+    level: string; 
+    salary: number;
+    status: string;
+}
+
+export interface IAttachNotesRequest {
+    jobListingId: number;
+    content: string;
+    name: string;
+}
+
 export const jobStatusDictReversed = {
     "Accepted":"accepted",
     "Declined":"declined",

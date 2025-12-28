@@ -1,6 +1,7 @@
 import axios from "axios"
-import type { Profile, JobListing } from "../utils/types"
+import type { Profile, JobListing, IAttachNotesRequest, ICreateJobListingRequest } from "../utils/types"
 import { getLocalProfile } from "../utils/helpers"
+import type { ICreateJobListingContent } from "../components/createJobListingContent/CreateJobListingContent"
 
 // TODO : add zod to the equation?
 
@@ -23,8 +24,14 @@ export const getJobListings = async () => {
 
 }
 
-export const createJobListing = async (requestBody: any) => {
+export const createJobListing = async (requestBody: ICreateJobListingRequest) => {
     await axios.post("http://localhost:8080/job-listing/create", requestBody, {
+        headers: {profileId: getLocalProfile().id}
+    })
+}
+
+export const attachJobListingNote = async (requestBody : IAttachNotesRequest) => {
+    await axios.post("http://localhost:8080/job-listing/notes", requestBody, {
         headers: {profileId: getLocalProfile().id}
     })
 }

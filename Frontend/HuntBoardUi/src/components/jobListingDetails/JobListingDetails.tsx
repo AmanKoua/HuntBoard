@@ -16,8 +16,11 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
 
     const [selectedNote, setSelectedNote] = useState("")
     const [isNotesCollapsed, setIsNotesCollapsed] = useState(false);
-
     const [isNotesModalOpen, setIsNotesModalOpen] = useState(false)
+
+    const closeNoteModalHandler = () => {
+        setIsNotesModalOpen(false)
+    }
 
     return <aside>
         <div className='listing-header'>
@@ -45,11 +48,11 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
             }
         </div>
         <div className="button-row">
-            <button className="button-row__button" onClick={()=>{setIsNotesModalOpen(true)}}>Create New Note</button>
+            <button className="button-row__button" onClick={() => { setIsNotesModalOpen(true) }}>Create New Note</button>
             <button className="button-row__button">Create New Contact</button>
         </div>
-        <Modal isOpen={isNotesModalOpen} closeHandler={()=>{
-            setIsNotesModalOpen(false)
-        }} title="Create Note"><CreateNotesContent/></Modal>
+        <Modal isOpen={isNotesModalOpen} closeHandler={closeNoteModalHandler} title="Create Note">
+            <CreateNotesContent jobListing={jobListing} closeModalHandler={closeNoteModalHandler} />
+        </Modal>
     </aside>
 }

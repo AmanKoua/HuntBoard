@@ -36,6 +36,7 @@ export const CreateJobListingContent = ({closeModalhandler}: ICreateJobListingCo
 
     const crateJobListingHandler = () => {
         // TODO : input sanitization?
+        // TODO : useCallback?
 
         const requestBody = {
             company: company,
