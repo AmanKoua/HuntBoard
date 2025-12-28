@@ -1,0 +1,13 @@
+.selector-grid {
+    // background-color: red;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: max-content;
+
+    .selector-row {
+        margin-top: 1rem;
+    }
+
+}

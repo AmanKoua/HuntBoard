@@ -1,14 +1,19 @@
 import type { JobListing } from "../../utils/types"
-import { SelectorRow } from "../selectorRow/SelectorRow"
+import { SelectorGrid } from "../selectorGrid/SelectorGrid"
+import { useState } from "react"
+
 import "./JobListingDetails.scss"
 
-const mockNoteNames = ["Note 1", "Note 2", "Note 3", "Note 4"]
+const mockNoteNames = ["Note 1", "Note 2", "Note 3", "Note 4","Note 5", "Note 6", "Note 7", "Note 8"]
 
 export interface IJobListingDetails {
     jobListing: JobListing
 }
 
 export const JobListingDetails = ({jobListing}:IJobListingDetails) => {
+
+    const [selectedNote, setSelectedNote] = useState("")
+
     return <aside>
         <div className='listing-header'>
             <h2>{jobListing.company}</h2>
@@ -22,7 +27,7 @@ export const JobListingDetails = ({jobListing}:IJobListingDetails) => {
             <div className='notes-section__header'>
                 <h3>Notes</h3>
             </div>
-            <SelectorRow value={""} setValue={()=>{}} options={mockNoteNames}></SelectorRow>
+            <SelectorGrid value={selectedNote} setValue={setSelectedNote} options={mockNoteNames} maxRowLen={4}/>
         </div>
     </aside>
 }
