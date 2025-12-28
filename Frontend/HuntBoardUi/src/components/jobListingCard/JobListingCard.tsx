@@ -1,8 +1,10 @@
-import type { JobListing } from "../../utils/types"
+import { jobStatusDictReversed, type JobListing } from "../../utils/types"
 import "./JobListingCard.scss"
 
 export interface IJobListingCard {
-    jobListing: JobListing
+    isSelected: boolean;
+    jobListing: JobListing;
+    setSelectedJobListing: (val: JobListing) => void;
 }
 
 const getProgressString = (jobListing: JobListing): string => {
@@ -16,12 +18,18 @@ const getProgressString = (jobListing: JobListing): string => {
 }
 
 const getStatusModifier = (jobListing: JobListing): string => {
-    return `listing-card__secondary-info--${jobListing.status}`
+    return `listing-card__secondary-info--${jobStatusDictReversed[jobListing.status as keyof typeof jobStatusDictReversed]}`
 }
 
-export const JobListingCard = ({ jobListing }: IJobListingCard) => {
+const getListingCardModifier = (isSelected: boolean) => {
+    return `listing-card ${isSelected ? 'listing-card--selected' : ''}`
+}
 
-    return <div className="listing-card">
+export const JobListingCard = ({ isSelected, jobListing, setSelectedJobListing }: IJobListingCard) => {
+
+    return <div className={getListingCardModifier(isSelected)} onClick={()=>{
+        setSelectedJobListing(jobListing)
+    }}>
         <div className='listing-card__primary-info'>
             <p className='item'>
                 <strong>Company: </strong> {jobListing.company}
@@ -44,6 +52,6 @@ export const JobListingCard = ({ jobListing }: IJobListingCard) => {
                 <strong>Status: </strong> {jobListing.status}
             </p>   
         </div> 
-        </div>
+    </div>
 
 }
