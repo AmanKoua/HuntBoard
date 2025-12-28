@@ -9,7 +9,7 @@ type JobListing struct {
 	PostingDate            string `json:"postingDate"`
 	NumInterviews          int    `json:"numInterviews"`
 	NumInterviewsCompleted int    `json:"numInterviewsCompleted"`
-	Level                  string `json:"level"` // junior, mid-senior, senior, staff, principal
+	Level                  string `json:"level"` // 'Junior', 'Mid Senior', 'Senior', 'Staff', 'Principal'
 	Salary                 int64  `json:"salary"`
-	Status                 string `json:"status" gorm:"not null; size: 255"` // accepted, declined, rejected, interviewing, ghosted, not applied, offer received
+	Status                 string `json:"status" gorm:"not null; size: 255"` // 'Accepted', 'Declined', 'Rejected', 'Interviewing', 'Ghosted', 'Not applied', 'Offer received'
 }
