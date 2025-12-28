@@ -1,7 +1,7 @@
 import { SelectorRow } from "../selectorRow/SelectorRow"
 import { useState, useContext } from "react"
 import "./CreateJobListingContent.scss"
-import { jobLevelDict, jobLocationDict, jobStatusDict } from "../../utils/types"
+import { jobLevelDict, jobLocationDict, jobStatusDictReversed } from "../../utils/types"
 import { createJobListing } from "../../services/axiosService"
 import { AppContext } from "../../context/appContext"
 
@@ -12,7 +12,7 @@ export interface ICreateJobListingContent {
 export const CreateJobListingContent = ({closeModalhandler}: ICreateJobListingContent) => {
 
     const jobLocationOptions = Object.keys(jobLocationDict)
-    const jobStatusOptions = Object.keys(jobStatusDict)
+    const jobStatusOptions = Object.keys(jobStatusDictReversed)
     const jobLevelOptions = Object.keys(jobLevelDict)
 
     const [location, setLocation] = useState("")
@@ -46,7 +46,7 @@ export const CreateJobListingContent = ({closeModalhandler}: ICreateJobListingCo
             numInterviewsCompleted: Number(interviewsCompleted),
             level: jobLevel,
             salary: Number(salary),
-            status: status
+            status: jobStatusDictReversed[status as keyof typeof jobStatusDictReversed]
         }
 
         createJobListing(requestBody).then(() => {

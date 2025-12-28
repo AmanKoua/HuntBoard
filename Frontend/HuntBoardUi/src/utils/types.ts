@@ -27,6 +27,16 @@ export interface AlertBannerData {
 }
 
 export const jobStatusDict = {
+    "accepted": "Accepted",
+    "declined": "Declined",
+    "rejected": "Rejected",
+    "interviewing": "Interviewing",
+    "ghosted": "Ghosted",
+    "not-applied": "Not applied",
+    "offer-received": "Offer received"
+}
+
+export const jobStatusDictReversed = {
     "Accepted":"accepted",
     "Declined":"declined",
     "Rejected":"rejected",
@@ -35,6 +45,7 @@ export const jobStatusDict = {
     "Not applied": "not-applied",
     "Offer received": "offer-received"
 }
+
 
 export const jobLocationDict = {
     "In Person":"in-person",

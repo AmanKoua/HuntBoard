@@ -1,6 +1,6 @@
 import type { JobListing } from "../../utils/types"
-import "./JobListingCard.scss"
 import { jobStatusDict } from "../../utils/types"
+import "./JobListingCard.scss"
 
 export interface IJobListingCard {
     jobListing: JobListing
@@ -17,8 +17,7 @@ const getProgressString = (jobListing: JobListing): string => {
 }
 
 const getStatusModifier = (jobListing: JobListing): string => {
-    // TODO : stopped here. Standardize the names to unfuck this!
-    return `listing-card__secondary-info--${jobStatusDict[jobListing.status as keyof typeof jobStatusDict]}`
+    return `listing-card__secondary-info--${jobListing.status}`
 }
 
 export const JobListingCard = ({ jobListing }: IJobListingCard) => {
@@ -43,7 +42,7 @@ export const JobListingCard = ({ jobListing }: IJobListingCard) => {
                 <strong>Progress: </strong> {getProgressString(jobListing)}
             </p>   
             <p className={`item ${getStatusModifier(jobListing)}`}>
-                <strong>Status: </strong> {jobListing.status}
+                <strong>Status: </strong> {jobStatusDict[jobListing.status as keyof typeof jobStatusDict]}
             </p>   
         </div> 
         </div>
