@@ -56,8 +56,10 @@ aside {
         &__content {
 
             // background-color: red;
-            display: flex; 
+            display: flex;
             flex-direction: column;
+            border-bottom: 1px solid black;
+            padding-bottom: 1rem;
 
             textarea {
                 margin: 1rem auto auto auto;
@@ -69,6 +71,24 @@ aside {
 
         }
 
+    }
+
+    .button-row {
+
+        display: flex;
+
+        .button-row__button {
+            margin: 1rem auto auto auto;
+            padding: 1rem;
+            background: none;
+            border: 1px solid gray;
+            border-radius: .25rem;
+
+            &:hover {
+                box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+                background-color: rgb(207, 212, 252);
+            }
+        }
     }
 
 }
