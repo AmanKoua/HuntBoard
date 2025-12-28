@@ -221,6 +221,7 @@ func (this *JobListingController) attachJobNotes(c *fiber.Ctx) error {
 	note := entity.Note{
 		JobListingId: attachNoteRequest.JobListingId,
 		Content:      attachNoteRequest.Content,
+		Name:         attachNoteRequest.Name,
 	}
 
 	tx = this.dbService.Db.Save(&note)
