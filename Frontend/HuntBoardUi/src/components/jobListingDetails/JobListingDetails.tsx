@@ -13,6 +13,7 @@ export interface IJobListingDetails {
 export const JobListingDetails = ({jobListing}:IJobListingDetails) => {
 
     const [selectedNote, setSelectedNote] = useState("")
+    const [isNotesCollapsed, setIsNotesCollapsed] = useState(false);
 
     return <aside>
         <div className='listing-header'>
@@ -26,8 +27,18 @@ export const JobListingDetails = ({jobListing}:IJobListingDetails) => {
         <div className='notes-section'>
             <div className='notes-section__header'>
                 <h3>Notes</h3>
+                <button onClick={()=>{
+                    setIsNotesCollapsed(val => !val)
+                }}>
+                    {isNotesCollapsed ? '+' : '-'}
+                </button>
             </div>
-            <SelectorGrid value={selectedNote} setValue={setSelectedNote} options={mockNoteNames} maxRowLen={4}/>
+            { !isNotesCollapsed && 
+            <div className='notes-section__content'>
+                <SelectorGrid value={selectedNote} setValue={setSelectedNote} options={mockNoteNames} maxRowLen={4}/>
+                {selectedNote && <textarea value={"this shit is actaully really cool"}/> }
+            </div> 
+            }
         </div>
     </aside>
 }
