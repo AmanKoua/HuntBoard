@@ -3,6 +3,8 @@ import { SelectorGrid } from "../selectorGrid/SelectorGrid"
 import { useState } from "react"
 
 import "./JobListingDetails.scss"
+import { Modal } from "../modal/Modal"
+import { CreateNotesContent } from "../createNotesContent/CreateNotesContent"
 
 const mockNoteNames = ["Note 1", "Note 2", "Note 3", "Note 4", "Note 5", "Note 6", "Note 7", "Note 8"]
 
@@ -14,6 +16,8 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
 
     const [selectedNote, setSelectedNote] = useState("")
     const [isNotesCollapsed, setIsNotesCollapsed] = useState(false);
+
+    const [isNotesModalOpen, setIsNotesModalOpen] = useState(false)
 
     return <aside>
         <div className='listing-header'>
@@ -41,8 +45,11 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
             }
         </div>
         <div className="button-row">
-            <button className="button-row__button">Create New Note</button>
+            <button className="button-row__button" onClick={()=>{setIsNotesModalOpen(true)}}>Create New Note</button>
             <button className="button-row__button">Create New Contact</button>
         </div>
+        <Modal isOpen={isNotesModalOpen} closeHandler={()=>{
+            setIsNotesModalOpen(false)
+        }} title="Create Note"><CreateNotesContent/></Modal>
     </aside>
 }
