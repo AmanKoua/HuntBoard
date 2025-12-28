@@ -46,7 +46,7 @@ export const CreateJobListingContent = ({closeModalhandler}: ICreateJobListingCo
             numInterviewsCompleted: Number(interviewsCompleted),
             level: jobLevel,
             salary: Number(salary),
-            status: jobStatusDictReversed[status as keyof typeof jobStatusDictReversed]
+            status: status
         }
 
         createJobListing(requestBody).then(() => {

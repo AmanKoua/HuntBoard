@@ -26,16 +26,6 @@ export interface AlertBannerData {
     type: 'info' | "alert";
 }
 
-export const jobStatusDict = {
-    "accepted": "Accepted",
-    "declined": "Declined",
-    "rejected": "Rejected",
-    "interviewing": "Interviewing",
-    "ghosted": "Ghosted",
-    "not-applied": "Not applied",
-    "offer-received": "Offer received"
-}
-
 export const jobStatusDictReversed = {
     "Accepted":"accepted",
     "Declined":"declined",

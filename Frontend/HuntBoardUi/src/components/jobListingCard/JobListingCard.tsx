@@ -1,5 +1,4 @@
 import type { JobListing } from "../../utils/types"
-import { jobStatusDict } from "../../utils/types"
 import "./JobListingCard.scss"
 
 export interface IJobListingCard {
@@ -42,7 +41,7 @@ export const JobListingCard = ({ jobListing }: IJobListingCard) => {
                 <strong>Progress: </strong> {getProgressString(jobListing)}
             </p>   
             <p className={`item ${getStatusModifier(jobListing)}`}>
-                <strong>Status: </strong> {jobStatusDict[jobListing.status as keyof typeof jobStatusDict]}
+                <strong>Status: </strong> {jobListing.status}
             </p>   
         </div> 
         </div>
