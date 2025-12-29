@@ -1,8 +1,8 @@
 import { useState, useContext } from "react"
 import "./CreateNotesContent.scss"
-import { attachJobListingNote } from "../../services/axiosService"
-import type { JobListing } from "../../utils/types"
-import { AppContext } from "../../context/appContext"
+import { attachJobListingNote } from "../../../services/axiosService"
+import type { JobListing } from "../../../utils/types"
+import { AppContext } from "../../../context/appContext"
 
 
 export interface ICreateNotesContent {

@@ -1,9 +1,9 @@
-import { SelectorRow } from "../selectorRow/SelectorRow"
+import { SelectorRow } from "../../selectorRow/SelectorRow"
 import { useState, useContext } from "react"
 import "./CreateJobListingContent.scss"
-import { jobLevelDict, jobLocationDict, jobStatusDictReversed } from "../../utils/types"
-import { createJobListing } from "../../services/axiosService"
-import { AppContext } from "../../context/appContext"
+import { jobLevelDict, jobLocationDict, jobStatusDictReversed } from "../../../utils/types"
+import { createJobListing } from "../../../services/axiosService"
+import { AppContext } from "../../../context/appContext"
 
 export interface ICreateJobListingContent {
     closeModalhandler: () => void;

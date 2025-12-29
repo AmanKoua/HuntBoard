@@ -1,12 +1,12 @@
 import type { JobListing, JobListingNote } from "../../utils/types"
 import { SelectorGrid } from "../selectorGrid/SelectorGrid"
-import { useState, useRef, useEffect } from "react"
+import { useState, useEffect } from "react"
 
 import "./JobListingDetails.scss"
-import { Modal } from "../modal/Modal"
-import { CreateNotesContent } from "../createNotesContent/CreateNotesContent"
+import { CreateNotesContent } from "../modalContent/createNotesContent/CreateNotesContent"
 import { getJobListingNotes } from "../../services/axiosService"
 import { panic } from "../../utils/helpers"
+import { Modal } from "../../components/modal/Modal"
 
 export interface IJobListingDetails {
     jobListing: JobListing
@@ -20,6 +20,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
     const [isNotesModalOpen, setIsNotesModalOpen] = useState(false)
     const [jobListingNotes, setJobListingNotes] = useState<JobListingNote[]>([]);
     const [jobListingNoteNames, setJobListingNoteNames] = useState<string[]>([])
+    const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
 
     useEffect(() => {
 
@@ -32,7 +33,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
 
     }, [jobListing])
 
-    useEffect(()=>{
+    useEffect(() => {
 
         if (selectedNoteName === "") {
             setSelectedNote(null)
@@ -40,22 +41,26 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         }
 
         for (const note of jobListingNotes) {
-            if (note.name === selectedNoteName){
+            if (note.name === selectedNoteName) {
                 setSelectedNote(note)
             }
         }
 
-    },[selectedNoteName])
+    }, [selectedNoteName])
 
-    useEffect(()=>{ // collapse on component render
+    useEffect(() => { // collapse on component render
         setIsNotesCollapsed(true)
         setSelectedNote(null)
         setSelectedNoteName("")
         setIsNotesModalOpen(false)
-    },[jobListing])
+    }, [jobListing])
 
     const closeNoteModalHandler = () => {
         setIsNotesModalOpen(false)
+    }
+
+    const closeContactModalHandler = () => {
+        setIsContactModalOpen(false)
     }
 
     return <aside>
@@ -89,6 +94,9 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         </div>
         <Modal isOpen={isNotesModalOpen} closeHandler={closeNoteModalHandler} title="Create Note">
             <CreateNotesContent jobListing={jobListing} closeModalHandler={closeNoteModalHandler} />
+        </Modal>
+        <Modal isOpen={isContactModalOpen} title={"Create New Contact"} closeHandler={closeContactModalHandler}>
+            <div>lmao</div>
         </Modal>
     </aside>
 }

@@ -4,11 +4,11 @@ import "./Dashboard.scss"
 import { AppContext } from "../../context/appContext"
 import { getJobListings } from "../../services/axiosService"
 import { panic } from "../../utils/helpers"
-import { Modal } from "../../components/modal/Modal"
 import { useState } from "react"
-import { CreateJobListingContent } from "../../components/createJobListingContent/CreateJobListingContent"
+import { CreateJobListingContent } from "../../components/modalContent/createJobListingContent/CreateJobListingContent"
 import { JobListingDetails } from "../../components/jobListingDetails/JobListingDetails"
 import type { JobListing } from "../../utils/types"
+import { Modal } from "../../components/modal/Modal"
 
 export const Dashboard = () => {
 

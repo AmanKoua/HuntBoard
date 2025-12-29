@@ -1,7 +1,6 @@
 import axios from "axios"
 import type { Profile, JobListing, IAttachNotesRequest, ICreateJobListingRequest, JobListingNote } from "../utils/types"
 import { getLocalProfile } from "../utils/helpers"
-import type { ICreateJobListingContent } from "../components/createJobListingContent/CreateJobListingContent"
 
 // TODO : add zod to the equation?
 
