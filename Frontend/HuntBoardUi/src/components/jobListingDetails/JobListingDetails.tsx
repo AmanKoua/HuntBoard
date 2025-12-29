@@ -76,7 +76,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
                     {isNotesCollapsed ? '+' : '-'}
                 </button>
             </div>
-            {!isNotesCollapsed &&
+            {!isNotesCollapsed && jobListingNoteNames.length > 0 &&
                 <div className='notes-section__content'>
                     <SelectorGrid value={selectedNoteName} setValue={setSelectedNoteName} options={jobListingNoteNames} maxRowLen={4} />
                     {selectedNote && <textarea value={selectedNote.content} />}
