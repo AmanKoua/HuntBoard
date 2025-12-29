@@ -74,7 +74,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         </p>
         <div className='notes-section'>
             <div className='notes-section__header'>
-                <h3>Notes</h3>
+                <h3>Notes ({jobListingNoteNames.length})</h3>
                 <button onClick={() => {
                     setIsNotesCollapsed(val => !val)
                 }}>
@@ -84,7 +84,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
             {!isNotesCollapsed && jobListingNoteNames.length > 0 &&
                 <div className='notes-section__content'>
                     <SelectorGrid value={selectedNoteName} setValue={setSelectedNoteName} options={jobListingNoteNames} maxRowLen={4} />
-                    {selectedNote && <textarea value={selectedNote.content} />}
+                    {selectedNote && <textarea readOnly value={selectedNote.content} />}
                 </div>
             }
         </div>
