@@ -1,4 +1,4 @@
-export type SetState<T> =  React.Dispatch<React.SetStateAction<T>>
+export type SetState<T> = React.Dispatch<React.SetStateAction<T>>
 
 export interface Profile {
     id: number;
@@ -21,7 +21,19 @@ export interface JobListing {
     status: string;
 }
 
-export interface JobListingNote { 
+export interface Contact {
+    id: number;
+    profileId: number;
+    jobListingId: number;
+    firstName: string;
+    lastName: string;
+    rmail: string;
+    phoneNum: string;
+    type: string;   // Friend, Co-Worker, Classmate, Recruiter, Employee, Relative, Other
+    description: string;
+}
+
+export interface JobListingNote {
     id: number;
     name: string;
     content: string;
@@ -35,11 +47,11 @@ export interface AlertBannerData {
 export interface ICreateJobListingRequest {
     company: string;
     locationType: string;
-    link: string; 
-    postingDate: string; 
+    link: string;
+    postingDate: string;
     numInterviews: number;
     numInterviewsCompleted: number;
-    level: string; 
+    level: string;
     salary: number;
     status: string;
 }
@@ -50,27 +62,46 @@ export interface IAttachNotesRequest {
     name: string;
 }
 
+export interface ICreateContactRequest {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNum: string;
+    type: string;
+    description: string;
+}
+
 export const jobStatusDictReversed = {
-    "Accepted":"accepted",
-    "Declined":"declined",
-    "Rejected":"rejected",
-    "Interviewing":"interviewing",
-    "Ghosted":"ghosted",
+    "Accepted": "accepted",
+    "Declined": "declined",
+    "Rejected": "rejected",
+    "Interviewing": "interviewing",
+    "Ghosted": "ghosted",
     "Not applied": "not-applied",
     "Offer received": "offer-received"
 }
 
 
 export const jobLocationDict = {
-    "In Person":"in-person",
-    "Hybrid":"hybrid",
-    "Remote":"remote"
+    "In Person": "in-person",
+    "Hybrid": "hybrid",
+    "Remote": "remote"
 }
 
 export const jobLevelDict = {
-    "Junior":"junior",
-    "Mid Senior":"mid-senior",
-    "Senior":"senior",
+    "Junior": "junior",
+    "Mid Senior": "mid-senior",
+    "Senior": "senior",
     "Staff": "staff",
     "Principal": "principal"
+}
+
+export const contactTypeDict = {
+    "Friend": "Friend",
+    "Co-Worker": "Co-Worker",
+    "Classmate": "Classmate",
+    "Recruiter": "Recruiter",
+    "Employee": "Employee",
+    "Relative": "Relative",
+    "Other": "Other"
 }

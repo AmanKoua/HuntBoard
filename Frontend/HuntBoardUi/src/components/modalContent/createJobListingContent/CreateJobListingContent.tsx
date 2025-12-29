@@ -4,12 +4,13 @@ import "./CreateJobListingContent.scss"
 import { jobLevelDict, jobLocationDict, jobStatusDictReversed } from "../../../utils/types"
 import { createJobListing } from "../../../services/axiosService"
 import { AppContext } from "../../../context/appContext"
+import { getChangeHandler } from "../../../utils/helpers"
 
 export interface ICreateJobListingContent {
-    closeModalhandler: () => void;
+    closeModalHandler: () => void;
 }
 
-export const CreateJobListingContent = ({closeModalhandler}: ICreateJobListingContent) => {
+export const CreateJobListingContent = ({closeModalHandler: closeModalhandler}: ICreateJobListingContent) => {
 
     const jobLocationOptions = Object.keys(jobLocationDict)
     const jobStatusOptions = Object.keys(jobStatusDictReversed)
@@ -27,12 +28,6 @@ export const CreateJobListingContent = ({closeModalhandler}: ICreateJobListingCo
     const [salary, setSalary] = useState("");
 
     const {setIsAlertBannerOpen,setAlertBannerData} = useContext(AppContext)
-
-    const getChangeHandler = (setterFunc: (val: string) => void) => {
-        return (e: React.ChangeEvent<HTMLInputElement>) => {
-            setterFunc(e.target.value)
-        }
-    }
 
     const crateJobListingHandler = () => {
         // TODO : input sanitization?

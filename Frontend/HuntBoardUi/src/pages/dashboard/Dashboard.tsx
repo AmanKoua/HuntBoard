@@ -56,7 +56,7 @@ export const Dashboard = () => {
                 </button>
 
                 <Modal isOpen={isJobListingModalOpen} title={"Create Job Listing"} closeHandler={closeModalHandler}>
-                    <CreateJobListingContent closeModalhandler={closeModalHandler} />
+                    <CreateJobListingContent closeModalHandler={closeModalHandler} />
                 </Modal>
             </section>
             {selectedJobListing && <JobListingDetails jobListing={selectedJobListing} />}

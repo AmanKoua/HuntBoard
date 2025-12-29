@@ -7,6 +7,7 @@ import { CreateNotesContent } from "../modalContent/createNotesContent/CreateNot
 import { getJobListingNotes } from "../../services/axiosService"
 import { panic } from "../../utils/helpers"
 import { Modal } from "../../components/modal/Modal"
+import { CreateContactContent } from "../modalContent/createContactContent/CreateContactContent"
 
 export interface IJobListingDetails {
     jobListing: JobListing
@@ -90,13 +91,13 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         </div>
         <div className="button-row">
             <button className="button-row__button" onClick={() => { setIsNotesModalOpen(true) }}>Create New Note</button>
-            <button className="button-row__button">Create New Contact</button>
+            <button className="button-row__button" onClick={() => { setIsContactModalOpen(true) }}>Create New Contact</button>
         </div>
         <Modal isOpen={isNotesModalOpen} closeHandler={closeNoteModalHandler} title="Create Note">
             <CreateNotesContent jobListing={jobListing} closeModalHandler={closeNoteModalHandler} />
         </Modal>
         <Modal isOpen={isContactModalOpen} title={"Create New Contact"} closeHandler={closeContactModalHandler}>
-            <div>lmao</div>
+            <CreateContactContent closeModalHandler={closeContactModalHandler} jobListing={jobListing} />
         </Modal>
     </aside>
 }

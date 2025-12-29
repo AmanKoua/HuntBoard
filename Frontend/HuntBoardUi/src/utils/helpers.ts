@@ -27,3 +27,9 @@ export const getLocalProfile = (): Profile => {
     return profile!
 
 }
+
+export const getChangeHandler = (setterFunc: (val: string) => void) => {
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
+        setterFunc(e.target.value)
+    }
+}
