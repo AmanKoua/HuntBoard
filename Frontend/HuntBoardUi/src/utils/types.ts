@@ -21,6 +21,12 @@ export interface JobListing {
     status: string;
 }
 
+export interface JobListingNote { 
+    id: number;
+    name: string;
+    content: string;
+}
+
 export interface AlertBannerData {
     message: string;
     type: 'info' | "alert";

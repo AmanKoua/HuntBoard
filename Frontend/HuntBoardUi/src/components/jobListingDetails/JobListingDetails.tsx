@@ -1,12 +1,12 @@
-import type { JobListing } from "../../utils/types"
+import type { JobListing, JobListingNote } from "../../utils/types"
 import { SelectorGrid } from "../selectorGrid/SelectorGrid"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 
 import "./JobListingDetails.scss"
 import { Modal } from "../modal/Modal"
 import { CreateNotesContent } from "../createNotesContent/CreateNotesContent"
-
-const mockNoteNames = ["Note 1", "Note 2", "Note 3", "Note 4", "Note 5", "Note 6", "Note 7", "Note 8"]
+import { getJobListingNotes } from "../../services/axiosService"
+import { panic } from "../../utils/helpers"
 
 export interface IJobListingDetails {
     jobListing: JobListing
@@ -14,9 +14,42 @@ export interface IJobListingDetails {
 
 export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
 
-    const [selectedNote, setSelectedNote] = useState("")
+    const [selectedNote, setSelectedNote] = useState<JobListingNote | null>(null)
+    const [selectedNoteName, setSelectedNoteName] = useState("");
     const [isNotesCollapsed, setIsNotesCollapsed] = useState(false);
     const [isNotesModalOpen, setIsNotesModalOpen] = useState(false)
+    const [jobListingNotes, setJobListingNotes] = useState<JobListingNote[]>([]);
+    const [jobListingNoteNames, setJobListingNoteNames] = useState<string[]>([])
+
+    useEffect(() => {
+
+        getJobListingNotes(jobListing.id).then((result) => {
+            setJobListingNotes(result)
+            setJobListingNoteNames(result.map(note => note.name))
+        }).catch((e) => {
+            panic("failed to fetch job listing notes : " + e)
+        })
+
+    }, [jobListing])
+
+    useEffect(()=>{
+
+        if (selectedNoteName === "") {
+            setSelectedNote(null)
+            return
+        }
+
+        for (const note of jobListingNotes) {
+            if (note.name === selectedNoteName){
+                setSelectedNote(note)
+            }
+        }
+
+    },[selectedNoteName])
+
+    useEffect(()=>{ // collapse on component render
+        setIsNotesCollapsed(true)
+    },[])
 
     const closeNoteModalHandler = () => {
         setIsNotesModalOpen(false)
@@ -42,8 +75,8 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
             </div>
             {!isNotesCollapsed &&
                 <div className='notes-section__content'>
-                    <SelectorGrid value={selectedNote} setValue={setSelectedNote} options={mockNoteNames} maxRowLen={4} />
-                    {selectedNote && <textarea value={"this shit is actaully really cool"} />}
+                    <SelectorGrid value={selectedNoteName} setValue={setSelectedNoteName} options={jobListingNoteNames} maxRowLen={4} />
+                    {selectedNote && <textarea value={selectedNote.content} />}
                 </div>
             }
         </div>

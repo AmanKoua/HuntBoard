@@ -1,5 +1,5 @@
 import axios from "axios"
-import type { Profile, JobListing, IAttachNotesRequest, ICreateJobListingRequest } from "../utils/types"
+import type { Profile, JobListing, IAttachNotesRequest, ICreateJobListingRequest, JobListingNote } from "../utils/types"
 import { getLocalProfile } from "../utils/helpers"
 import type { ICreateJobListingContent } from "../components/createJobListingContent/CreateJobListingContent"
 
@@ -34,4 +34,12 @@ export const attachJobListingNote = async (requestBody : IAttachNotesRequest) =>
     await axios.post("http://localhost:8080/job-listing/notes", requestBody, {
         headers: {profileId: getLocalProfile().id}
     })
+}
+
+export const getJobListingNotes = async (jobListingId: number) => {
+    const response = await axios.get(`http://localhost:8080/job-listing/notes?jobListingId=${jobListingId}`, {
+        headers: {profileId: getLocalProfile().id}
+    })
+
+    return response.data as JobListingNote[]
 }
