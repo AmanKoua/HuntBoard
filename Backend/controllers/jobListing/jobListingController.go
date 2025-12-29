@@ -77,6 +77,12 @@ func (this *JobListingController) createJobListing(c *fiber.Ctx) error {
 		})
 	}
 
+	if createJobListingRequest.Company == "" || createJobListingRequest.LocationType == "" || createJobListingRequest.Link == "" || createJobListingRequest.Salary == 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "job creation request body failed, because required fields are missing or invalid!",
+		})
+	}
+
 	jobListing := entity.JobListing{
 		ProfileId:              profile.Id,
 		Company:                createJobListingRequest.Company,

@@ -86,9 +86,7 @@ func (this *ContactController) createContact(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "successfully created contact",
-	})
+	return c.Status(fiber.StatusOK).JSON(contact)
 
 }
 
