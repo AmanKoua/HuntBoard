@@ -16,7 +16,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
 
     const [selectedNote, setSelectedNote] = useState<JobListingNote | null>(null)
     const [selectedNoteName, setSelectedNoteName] = useState("");
-    const [isNotesCollapsed, setIsNotesCollapsed] = useState(false);
+    const [isNotesCollapsed, setIsNotesCollapsed] = useState(true);
     const [isNotesModalOpen, setIsNotesModalOpen] = useState(false)
     const [jobListingNotes, setJobListingNotes] = useState<JobListingNote[]>([]);
     const [jobListingNoteNames, setJobListingNoteNames] = useState<string[]>([])
@@ -49,7 +49,10 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
 
     useEffect(()=>{ // collapse on component render
         setIsNotesCollapsed(true)
-    },[])
+        setSelectedNote(null)
+        setSelectedNoteName("")
+        setIsNotesModalOpen(false)
+    },[jobListing])
 
     const closeNoteModalHandler = () => {
         setIsNotesModalOpen(false)
