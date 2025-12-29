@@ -19,7 +19,6 @@ const generateSelectorRows = (partitionedData: string[][], value: string, setVal
 
 export const SelectorGrid = ({maxRowLen, options, value, setValue}: ISelectorGrid) => {
 
-
     const [partitionedData, setPartitionedData] = useState<string[][]>([])
 
     useEffect(()=>{
@@ -47,7 +46,7 @@ export const SelectorGrid = ({maxRowLen, options, value, setValue}: ISelectorGri
 
         setPartitionedData(result)
 
-    },[])
+    },[options])
 
     return <div className='selector-grid'>
         {generateSelectorRows(partitionedData, value, setValue)}
