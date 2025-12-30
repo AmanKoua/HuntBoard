@@ -56,3 +56,16 @@ export const attachContactToListing = async (contactId: number, jobListingId: nu
         headers: { profileId: getLocalProfile().id }
     })
 }
+
+export const getContacts = async (jobListingId?: number) => {
+
+    const hasJobListingId = (jobListingId && jobListingId > -1)
+    const url = hasJobListingId ? `http://localhost:8080/contact?jobListingId=${jobListingId}` : "http://localhost:8080/contact"
+
+    const response = await axios.get(url, {
+        headers: { profileId: getLocalProfile().id }
+    })
+
+    return response.data as Contact[]
+
+}

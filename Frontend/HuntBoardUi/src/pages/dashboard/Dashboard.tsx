@@ -2,8 +2,7 @@ import { useContext, useEffect } from "react"
 import { JobListingCard } from "../../components/jobListingCard/JobListingCard"
 import "./Dashboard.scss"
 import { AppContext } from "../../context/appContext"
-import { getJobListings } from "../../services/axiosService"
-import { panic } from "../../utils/helpers"
+import { getContacts, getJobListings } from "../../services/axiosService"
 import { useState } from "react"
 import { CreateJobListingContent } from "../../components/modalContent/createJobListingContent/CreateJobListingContent"
 import { JobListingDetails } from "../../components/jobListingDetails/JobListingDetails"
@@ -16,7 +15,7 @@ export const Dashboard = () => {
     const [selectedJobListing, setSelectedJobListing] = useState<JobListing | null>(null)
 
     const appContext = useContext(AppContext)
-    const { jobListings, setJobListings } = appContext
+    const { jobListings, setJobListings, contacts, setContacts, setAlertBannerData, setIsAlertBannerOpen } = appContext
 
     useEffect(() => {
 
@@ -25,7 +24,20 @@ export const Dashboard = () => {
                 setJobListings(listings)
             })
             .catch(() => {
-                panic("failed to retrieve job listings!")
+                setAlertBannerData({message:"failed to retrieve job listings!", type:"alert"})
+                setIsAlertBannerOpen(true);
+            })
+
+    }, [])
+
+    useEffect(() => {
+
+        getContacts()
+            .then(data => {
+                setContacts(data)
+            }).catch(()=> {
+                setAlertBannerData({message:"failed to retrieve contacts!", type:"alert"})
+                setIsAlertBannerOpen(true);
             })
 
     }, [])
