@@ -27,7 +27,7 @@ export interface Contact {
     jobListingId: number;
     firstName: string;
     lastName: string;
-    rmail: string;
+    email: string;
     phoneNum: string;
     type: string;   // Friend, Co-Worker, Classmate, Recruiter, Employee, Relative, Other
     description: string;

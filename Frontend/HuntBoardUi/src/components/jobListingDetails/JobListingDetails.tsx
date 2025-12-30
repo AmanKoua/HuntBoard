@@ -9,6 +9,7 @@ import { panic } from "../../utils/helpers"
 import { Modal } from "../../components/modal/Modal"
 import { CreateContactContent } from "../modalContent/createContactContent/CreateContactContent"
 import { AppContext } from "../../context/appContext"
+import { ContactCard } from "../contactCard/ContactCard"
 
 export interface IJobListingDetails {
     jobListing: JobListing
@@ -24,7 +25,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
     const [jobListingNoteNames, setJobListingNoteNames] = useState<string[]>([])
 
     const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
-    const [selectedContactId, setSelectedContactId] = useState("")
+    const [selectedContactName, setSelectedContactName] = useState("")
     const [isContactsCollapsed, setIsContactsCollapsed] = useState(true);
     const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
     const [jobListingContacts, setJobListingContacts] = useState<Contact[]>([])
@@ -74,9 +75,16 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
 
         setIsContactsCollapsed(true)
         setSelectedContact(null)
-        setSelectedContactId("")
+        setSelectedContactName("")
         setIsContactModalOpen(false)
     }, [jobListing])
+
+    useEffect(()=>{
+        const selectedContact = contacts.filter(contact => selectedContactName.includes(contact.firstName) && selectedContactName.includes(contact.lastName))[0]
+        setSelectedContact(
+            selectedContact
+        )
+    },[selectedContactName])
 
     const generateSectionToggleButton = useCallback((state: boolean, setState: SetState<boolean>) => {
         return <button onClick={() => {
@@ -122,7 +130,8 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
             </div>
             {!isContactsCollapsed && jobListingContacts.length > 0 &&
                 <div className='contacts-section__content'>
-                    <SelectorGrid value={selectedContactId} setValue={setSelectedContactId} options={jobListingContactsOptions} maxRowLen={4} />
+                    <SelectorGrid value={selectedContactName} setValue={setSelectedContactName} options={jobListingContactsOptions} maxRowLen={4} />
+                    {selectedContact && <ContactCard contact={selectedContact}/>}
                 </div>
             }
         </div>
