@@ -29,7 +29,7 @@ func (this *ContactController) Register(app *fiber.App) {
 	contact.Get("/", this.getContacts)
 	contact.Post("/", this.createContact)
 	contact.Put("/", this.attachJobListing)
-
+	contact.Delete("/", this.deleteContact)
 }
 
 func (this *ContactController) verifyProfileWrapper(c *fiber.Ctx) error {
@@ -149,6 +149,29 @@ func (this *ContactController) attachJobListing(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": "successfully updated",
+	})
+
+}
+
+func (this *ContactController) deleteContact(c *fiber.Ctx) error {
+
+	contactIdParam := c.Query("contactId")
+	contactId, err := strconv.Atoi(contactIdParam)
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "cannot delete contact, because contactId query param was invalid",
+		})
+	}
+
+	if tx := this.dbService.Db.Delete(&entity.Contact{}, contactId); tx.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "failed to delete contact with id : " + string(contactId),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "successfully deleted contact",
 	})
 
 }
