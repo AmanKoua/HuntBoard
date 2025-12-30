@@ -9,6 +9,7 @@ import (
 	"github.com/AmanKoua/huntboard/services/db"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 type ContactController struct {
@@ -39,8 +40,17 @@ func (this *ContactController) getContacts(c *fiber.Ctx) error {
 
 	profile := c.Locals("profile").(entity.Profile)
 	contacts := []entity.Contact{}
+	jobListingId := c.Query("jobListingId")
 
-	if tx := this.dbService.Db.Find(&contacts, "profile_id = ?", profile.Id); tx.Error != nil {
+	var tx *gorm.DB = nil
+
+	if len(jobListingId) > 0 {
+		tx = this.dbService.Db.Find(&contacts, "profile_id = ? AND job_listing_id = ?", profile.Id, jobListingId)
+	} else {
+		tx = this.dbService.Db.Find(&contacts, "profile_id = ?", profile.Id)
+	}
+
+	if tx.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "failed to retrieve contacts",
 		})
