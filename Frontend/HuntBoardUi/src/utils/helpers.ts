@@ -28,9 +28,23 @@ export const getLocalProfile = (): Profile => {
 
 }
 
-export const getChangeHandler = (setterFunc: (val: string) => void) => {
+export const sanitizePhoneNumber = (val: string) => {
+
+    let temp = val; 
+    temp = temp.replaceAll(/(\D)/g,  "")
+
+    if(temp.length > 10) {
+        temp = temp.substring(0,11)
+    }
+
+    return temp;
+
+}
+
+export const getChangeHandler = (setterFunc: (val: string) => void, sanitizer?: (val: string) => string) => {
     return (e: React.ChangeEvent<HTMLInputElement>) => {
-        setterFunc(e.target.value)
+        let data = sanitizer ? sanitizer(e.target.value) : e.target.value;
+        setterFunc(data)
     }
 }
 

@@ -3,7 +3,7 @@ import { contactTypeDict, type JobListing } from "../../../utils/types"
 import { useState, useContext } from "react"
 import "./CreateContactContent.scss"
 import { SelectorRow } from "../../selectorRow/SelectorRow";
-import { getChangeHandler } from "../../../utils/helpers";
+import { getChangeHandler, sanitizePhoneNumber } from "../../../utils/helpers";
 import { AppContext } from "../../../context/appContext";
 import { attachContactToListing, createContact } from "../../../services/axiosService";
 
@@ -101,7 +101,7 @@ export const CreateContactContent = ({ jobListing, closeModalHandler }: ICreateC
             <p>
                 <strong>Phone Number : </strong>
             </p>
-            <input onChange={getChangeHandler(setPhoneNumber)} />
+            <input value={phoneNumber} onChange={getChangeHandler(setPhoneNumber, sanitizePhoneNumber)} />
         </div>
 
         <div className='modal-content__input-row'>
