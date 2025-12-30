@@ -149,6 +149,8 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         setIsContactModalOpen(false)
     }
 
+    // TODO : refactor this
+
     return <aside>
         <div className='listing-header'>
             <h2>{jobListing.company}</h2>
@@ -208,7 +210,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
             <button className="button-row__button" onClick={() => { setIsContactModalOpen(true) }}>Create New Contact</button>
         </div>
         <Modal isOpen={isNotesModalOpen} closeHandler={closeNoteModalHandler} title="Create Note">
-            <CreateNotesContent jobListing={jobListing} closeModalHandler={closeNoteModalHandler} />
+            <CreateNotesContent jobListing={jobListing} closeModalHandler={closeNoteModalHandler} noteCreationCallback={fetchJobListingNotesWrapper} />
         </Modal>
         <Modal isOpen={isContactModalOpen} title={"Create New Contact"} closeHandler={closeContactModalHandler}>
             <CreateContactContent closeModalHandler={closeContactModalHandler} jobListing={jobListing} />

@@ -8,9 +8,10 @@ import { AppContext } from "../../../context/appContext"
 export interface ICreateNotesContent {
     jobListing: JobListing;
     closeModalHandler: () => void;
+    noteCreationCallback?: () => void;
 }
 
-export const CreateNotesContent = ({ jobListing, closeModalHandler }: ICreateNotesContent) => {
+export const CreateNotesContent = ({ jobListing, closeModalHandler, noteCreationCallback }: ICreateNotesContent) => {
 
     const [noteName, setNoteName] = useState("")
     const [noteContent, setNoteContent] = useState("")
@@ -41,6 +42,10 @@ export const CreateNotesContent = ({ jobListing, closeModalHandler }: ICreateNot
             })
             .finally(() => {
                 closeModalHandler()
+
+                if (noteCreationCallback) {
+                    noteCreationCallback()
+                }
             })
 
     }
