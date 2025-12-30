@@ -1,6 +1,6 @@
-import type { JobListing, JobListingNote } from "../../utils/types"
+import type { Contact, JobListing, JobListingNote, SetState } from "../../utils/types"
 import { SelectorGrid } from "../selectorGrid/SelectorGrid"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext, useCallback } from "react"
 
 import "./JobListingDetails.scss"
 import { CreateNotesContent } from "../modalContent/createNotesContent/CreateNotesContent"
@@ -8,6 +8,7 @@ import { getJobListingNotes } from "../../services/axiosService"
 import { panic } from "../../utils/helpers"
 import { Modal } from "../../components/modal/Modal"
 import { CreateContactContent } from "../modalContent/createContactContent/CreateContactContent"
+import { AppContext } from "../../context/appContext"
 
 export interface IJobListingDetails {
     jobListing: JobListing
@@ -21,7 +22,15 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
     const [isNotesModalOpen, setIsNotesModalOpen] = useState(false)
     const [jobListingNotes, setJobListingNotes] = useState<JobListingNote[]>([]);
     const [jobListingNoteNames, setJobListingNoteNames] = useState<string[]>([])
+
+    const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
+    const [selectedContactId, setSelectedContactId] = useState("")
+    const [isContactsCollapsed, setIsContactsCollapsed] = useState(true);
     const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
+    const [jobListingContacts, setJobListingContacts] = useState<Contact[]>([])
+    const [jobListingContactsOptions, setJobListingContactsOptions] = useState<string[]>([])
+
+    const { contacts } = useContext(AppContext)
 
     useEffect(() => {
 
@@ -49,12 +58,33 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
 
     }, [selectedNoteName])
 
+    useEffect(() => {
+        const filteredContacts = contacts.filter(contact => contact.jobListingId === jobListing.id);
+        const filteredContactsNames = filteredContacts.map(contact => `${contact.firstName} ${contact.lastName}`)
+
+        setJobListingContacts(filteredContacts)
+        setJobListingContactsOptions(filteredContactsNames)
+    }, [contacts, jobListing])
+
     useEffect(() => { // collapse on component render
         setIsNotesCollapsed(true)
         setSelectedNote(null)
         setSelectedNoteName("")
         setIsNotesModalOpen(false)
+
+        setIsContactsCollapsed(true)
+        setSelectedContact(null)
+        setSelectedContactId("")
+        setIsContactModalOpen(false)
     }, [jobListing])
+
+    const generateSectionToggleButton = useCallback((state: boolean, setState: SetState<boolean>) => {
+        return <button onClick={() => {
+            setState(val => !val)
+        }}>
+            {state ? '+' : '-'}
+        </button>
+    }, [setIsNotesCollapsed, setIsContactsCollapsed, isContactsCollapsed, isNotesCollapsed])
 
     const closeNoteModalHandler = () => {
         setIsNotesModalOpen(false)
@@ -76,16 +106,23 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         <div className='notes-section'>
             <div className='notes-section__header'>
                 <h3>Notes ({jobListingNoteNames.length})</h3>
-                <button onClick={() => {
-                    setIsNotesCollapsed(val => !val)
-                }}>
-                    {isNotesCollapsed ? '+' : '-'}
-                </button>
+                {generateSectionToggleButton(isNotesCollapsed, setIsNotesCollapsed)}
             </div>
             {!isNotesCollapsed && jobListingNoteNames.length > 0 &&
                 <div className='notes-section__content'>
                     <SelectorGrid value={selectedNoteName} setValue={setSelectedNoteName} options={jobListingNoteNames} maxRowLen={4} />
                     {selectedNote && <textarea readOnly value={selectedNote.content} />}
+                </div>
+            }
+        </div>
+        <div className="contacts-section contacts-section--padded">
+            <div className='contacts-section__header'>
+                <h3>Contacts ({jobListingContacts.length})</h3>
+                {generateSectionToggleButton(isContactsCollapsed, setIsContactsCollapsed)}
+            </div>
+            {!isContactsCollapsed && jobListingContacts.length > 0 &&
+                <div className='contacts-section__content'>
+                    <SelectorGrid value={selectedContactId} setValue={setSelectedContactId} options={jobListingContactsOptions} maxRowLen={4} />
                 </div>
             }
         </div>

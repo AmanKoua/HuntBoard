@@ -27,9 +27,17 @@ aside {
 
     }
 
-    .notes-section {
+    .notes-section, .contacts-section {
+
+        // background-color: red;
+
+        &--padded {
+            padding-top: 1rem;
+        }
 
         &__header {
+
+            // background-color: blue;
 
             display: flex;
             margin-bottom: 1rem;
