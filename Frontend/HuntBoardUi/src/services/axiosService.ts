@@ -69,3 +69,9 @@ export const getContacts = async (jobListingId?: number) => {
     return response.data as Contact[]
 
 }
+
+export const deleteContact = async (contactId: number) => {
+    await axios.delete(`http://localhost:8080/contact?contactId=${contactId}`,{
+        headers: { profileId: getLocalProfile().id }
+    })
+}

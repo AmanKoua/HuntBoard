@@ -4,8 +4,8 @@ import { useState, useEffect, useContext, useCallback } from "react"
 
 import "./JobListingDetails.scss"
 import { CreateNotesContent } from "../modalContent/createNotesContent/CreateNotesContent"
-import { getJobListingNotes } from "../../services/axiosService"
-import { panic } from "../../utils/helpers"
+import { deleteContact, getJobListingNotes } from "../../services/axiosService"
+import { assert, panic } from "../../utils/helpers"
 import { Modal } from "../../components/modal/Modal"
 import { CreateContactContent } from "../modalContent/createContactContent/CreateContactContent"
 import { AppContext } from "../../context/appContext"
@@ -34,7 +34,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
     const [jobListingContacts, setJobListingContacts] = useState<Contact[]>([])
     const [jobListingContactsOptions, setJobListingContactsOptions] = useState<string[]>([])
 
-    const { contacts } = useContext(AppContext)
+    const { contacts, setContacts, setAlertBannerData, setIsAlertBannerOpen } = useContext(AppContext)
 
     useEffect(() => {
 
@@ -97,6 +97,28 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         </button>
     }, [setIsNotesCollapsed, setIsContactsCollapsed, isContactsCollapsed, isNotesCollapsed])
 
+    const deleteContactHandler = () => {
+        assert(!!selectedContact, "expected selected contact NOT to be falsy!")
+
+        deleteContact(selectedContact!.id).then(() => {
+            setAlertBannerData({
+                message: "successfully deleted contact",
+                type: "info"
+            })
+            setIsAlertBannerOpen(true)
+
+            const filteredContacts = contacts.filter(contact => contact.id !== selectedContact!.id)
+            setContacts(filteredContacts)
+
+        }).catch(() => {
+            setAlertBannerData({
+                message: "failed to delete contact",
+                type: "alert"
+            })
+            setIsAlertBannerOpen(true)
+        })
+    }
+
     const closeNoteModalHandler = () => {
         setIsNotesModalOpen(false)
     }
@@ -147,7 +169,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
                     {selectedContact && <ContactCard contact={selectedContact} />}
                     {selectedContact &&
                         <div className='contacts-section__content__icon-row'>
-                            <button>
+                            <button onClick={deleteContactHandler}>
                                 <img className='icon delete' src={deleteIcon} />
                             </button>
                             <button>
