@@ -8,6 +8,7 @@ import { CreateJobListingContent } from "../../components/modalContent/createJob
 import { JobListingDetails } from "../../components/jobListingDetails/JobListingDetails"
 import type { JobListing } from "../../utils/types"
 import { Modal } from "../../components/modal/Modal"
+import { useFetchContacts } from "../../hooks/useFetchContacts"
 
 export const Dashboard = () => {
 
@@ -15,8 +16,9 @@ export const Dashboard = () => {
     const [selectedJobListing, setSelectedJobListing] = useState<JobListing | null>(null)
 
     const appContext = useContext(AppContext)
-    const { jobListings, setJobListings, contacts, setContacts, setAlertBannerData, setIsAlertBannerOpen } = appContext
+    const { jobListings, setJobListings, setAlertBannerData, setIsAlertBannerOpen } = appContext
 
+    // TODO : refactor logic into hook, just like for contacts?
     useEffect(() => {
 
         getJobListings()
@@ -30,17 +32,7 @@ export const Dashboard = () => {
 
     }, [])
 
-    useEffect(() => {
-
-        getContacts()
-            .then(data => {
-                setContacts(data)
-            }).catch(()=> {
-                setAlertBannerData({message:"failed to retrieve contacts!", type:"alert"})
-                setIsAlertBannerOpen(true);
-            })
-
-    }, [])
+    useFetchContacts()
 
     const toggleModalHandler = (state: boolean) => {
         setIsJobListingModalOpen(state)

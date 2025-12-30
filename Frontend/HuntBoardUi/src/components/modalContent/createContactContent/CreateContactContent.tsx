@@ -14,7 +14,7 @@ export interface ICreateContactContent {
 
 export const CreateContactContent = ({ jobListing, closeModalHandler }: ICreateContactContent) => {
 
-    const { setIsAlertBannerOpen, setAlertBannerData } = useContext(AppContext)
+    const { setIsAlertBannerOpen, setAlertBannerData, setContacts } = useContext(AppContext)
 
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
@@ -34,6 +34,8 @@ export const CreateContactContent = ({ jobListing, closeModalHandler }: ICreateC
             description
         }
 
+        let hasAttached = false;
+
         createContact(request)
             .then((contact) => {
 
@@ -43,6 +45,7 @@ export const CreateContactContent = ({ jobListing, closeModalHandler }: ICreateC
                         type: "info"
                     })
                     setIsAlertBannerOpen(true)
+                    hasAttached = true
                 }).catch(() => {
                     setAlertBannerData({
                         message: "Job contact created but NOT attached successfully!",
@@ -50,6 +53,8 @@ export const CreateContactContent = ({ jobListing, closeModalHandler }: ICreateC
                     })
                     setIsAlertBannerOpen(true)
                 }).finally(() => {
+                    const tempContact = hasAttached ? {...contact, jobListingId: jobListing.id} : contact
+                    setContacts(contacts => [...contacts, tempContact])
                     closeModalHandler()
                 })
 

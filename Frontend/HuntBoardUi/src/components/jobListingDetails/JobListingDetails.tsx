@@ -77,7 +77,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         setSelectedContact(null)
         setSelectedContactName("")
         setIsContactModalOpen(false)
-    }, [jobListing])
+    }, [jobListing, contacts])
 
     useEffect(()=>{
         const selectedContact = contacts.filter(contact => selectedContactName.includes(contact.firstName) && selectedContactName.includes(contact.lastName))[0]
