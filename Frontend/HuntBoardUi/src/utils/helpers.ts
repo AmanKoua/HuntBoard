@@ -33,3 +33,7 @@ export const getChangeHandler = (setterFunc: (val: string) => void) => {
         setterFunc(e.target.value)
     }
 }
+
+export const formatPhoneNum = (num: string) => {
+    return `${num.substring(0,3)}-${num.substring(3,6)}-${num.substring(6)}`
+}
