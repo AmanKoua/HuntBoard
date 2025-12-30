@@ -33,6 +33,7 @@ func (this *JobListingController) Register(app *fiber.App) {
 
 	jobListing.Post("/notes", this.attachJobNotes)
 	jobListing.Get("/notes", this.getJobListingNotes)
+	jobListing.Delete("/notes", this.deleteNote)
 
 }
 
@@ -288,5 +289,28 @@ func (this *JobListingController) getJobListingNotes(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(notes)
+
+}
+
+func (this *JobListingController) deleteNote(c *fiber.Ctx) error {
+
+	noteIdParam := c.Query("noteId")
+	noteId, err := strconv.Atoi(noteIdParam)
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "unable to delete note, because noteId query param was malformed",
+		})
+	}
+
+	if tx := this.dbService.Db.Delete(&entity.Note{}, noteId); tx.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "unable to delet note",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "note delted successfully",
+	})
 
 }
