@@ -11,6 +11,9 @@ import { CreateContactContent } from "../modalContent/createContactContent/Creat
 import { AppContext } from "../../context/appContext"
 import { ContactCard } from "../contactCard/ContactCard"
 
+import deleteIcon from "../../../public/icons/delete.svg";
+import editIcon from "../../../public/icons/edit.svg"
+
 export interface IJobListingDetails {
     jobListing: JobListing
 }
@@ -79,12 +82,12 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         setIsContactModalOpen(false)
     }, [jobListing, contacts])
 
-    useEffect(()=>{
+    useEffect(() => {
         const selectedContact = contacts.filter(contact => selectedContactName.includes(contact.firstName) && selectedContactName.includes(contact.lastName))[0]
         setSelectedContact(
             selectedContact
         )
-    },[selectedContactName])
+    }, [selectedContactName])
 
     const generateSectionToggleButton = useCallback((state: boolean, setState: SetState<boolean>) => {
         return <button onClick={() => {
@@ -120,6 +123,16 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
                 <div className='notes-section__content'>
                     <SelectorGrid value={selectedNoteName} setValue={setSelectedNoteName} options={jobListingNoteNames} maxRowLen={4} />
                     {selectedNote && <textarea readOnly value={selectedNote.content} />}
+                    {selectedNote &&
+                        <div className='notes-section__content__icon-row'>
+                            <button>
+                                <img className='icon delete' src={deleteIcon} />
+                            </button>
+                            <button>
+                                <img className='icon edit' src={editIcon} />
+                            </button>
+                        </div>
+                    }
                 </div>
             }
         </div>
@@ -131,7 +144,18 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
             {!isContactsCollapsed && jobListingContacts.length > 0 &&
                 <div className='contacts-section__content'>
                     <SelectorGrid value={selectedContactName} setValue={setSelectedContactName} options={jobListingContactsOptions} maxRowLen={4} />
-                    {selectedContact && <ContactCard contact={selectedContact}/>}
+                    {selectedContact && <ContactCard contact={selectedContact} />}
+                    {selectedContact &&
+                        <div className='contacts-section__content__icon-row'>
+                            <button>
+                                <img className='icon delete' src={deleteIcon} />
+                            </button>
+                            <button>
+                                <img className='icon edit' src={editIcon} />
+                            </button>
+                        </div>
+                    }
+
                 </div>
             }
         </div>

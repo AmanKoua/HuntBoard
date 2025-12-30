@@ -78,6 +78,19 @@ aside {
                 // background-color: blue;
             }
 
+            &__icon-row {
+                // background-color: blue;
+                width: 8rem;
+                display: flex;
+                justify-content: space-around;
+                margin: 1rem auto auto auto;
+
+                .icon {
+                    margin: auto;
+                }
+
+            }
+
         }
 
     }
