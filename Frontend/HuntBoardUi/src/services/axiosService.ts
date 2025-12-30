@@ -43,6 +43,12 @@ export const getJobListingNotes = async (jobListingId: number) => {
     return response.data as JobListingNote[]
 }
 
+export const deleteJobListingNote = async (noteId: number) => {
+    await axios.delete(`http://localhost:8080/job-listing/notes?noteId=${noteId}`,{
+        headers: { profileId: getLocalProfile().id }
+    })
+}
+
 export const createContact = async (requestBody: ICreateContactRequest) => {
     const response = await axios.post(`http://localhost:8080/contact`, requestBody, {
         headers: { profileId: getLocalProfile().id }

@@ -4,7 +4,7 @@ import { useState, useEffect, useContext, useCallback } from "react"
 
 import "./JobListingDetails.scss"
 import { CreateNotesContent } from "../modalContent/createNotesContent/CreateNotesContent"
-import { deleteContact, getJobListingNotes } from "../../services/axiosService"
+import { deleteContact, deleteJobListingNote, getJobListingNotes } from "../../services/axiosService"
 import { assert, panic } from "../../utils/helpers"
 import { Modal } from "../../components/modal/Modal"
 import { CreateContactContent } from "../modalContent/createContactContent/CreateContactContent"
@@ -36,15 +36,17 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
 
     const { contacts, setContacts, setAlertBannerData, setIsAlertBannerOpen } = useContext(AppContext)
 
-    useEffect(() => {
-
+    const fetchJobListingNotesWrapper = () => {
         getJobListingNotes(jobListing.id).then((result) => {
             setJobListingNotes(result)
             setJobListingNoteNames(result.map(note => note.name))
         }).catch((e) => {
             panic("failed to fetch job listing notes : " + e)
         })
+    }
 
+    useEffect(() => {
+        fetchJobListingNotesWrapper()
     }, [jobListing])
 
     useEffect(() => {
@@ -80,7 +82,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         setSelectedContact(null)
         setSelectedContactName("")
         setIsContactModalOpen(false)
-    }, [jobListing, contacts])
+    }, [jobListing, jobListingNotes, contacts])
 
     useEffect(() => {
         const selectedContact = contacts.filter(contact => selectedContactName.includes(contact.firstName) && selectedContactName.includes(contact.lastName))[0]
@@ -119,6 +121,26 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         })
     }
 
+    const deleteNoteHandler = () => {
+        assert(!!selectedNote, "expected selected note NOT to be falsy!")
+
+        deleteJobListingNote(selectedNote!.id).then(() => {
+            setAlertBannerData({
+                message: "successfully deleted note",
+                type: "info"
+            })
+            setIsAlertBannerOpen(true)
+            fetchJobListingNotesWrapper()
+        }).catch(() => {
+            setAlertBannerData({
+                message: "failed to delete note",
+                type: "alert"
+            })
+            setIsAlertBannerOpen(true)
+        })
+
+    }
+
     const closeNoteModalHandler = () => {
         setIsNotesModalOpen(false)
     }
@@ -147,7 +169,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
                     {selectedNote && <textarea readOnly value={selectedNote.content} />}
                     {selectedNote &&
                         <div className='notes-section__content__icon-row'>
-                            <button>
+                            <button onClick={deleteNoteHandler}>
                                 <img className='icon delete' src={deleteIcon} />
                             </button>
                             <button>
