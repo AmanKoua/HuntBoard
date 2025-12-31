@@ -28,6 +28,8 @@ func (this *JobListingController) Register(app *fiber.App) {
 
 	jobListing.Get("/", this.getJobListing)
 	jobListing.Post("/create", this.createJobListing)
+	jobListing.Delete("/", this.deleteJobListing)
+
 	jobListing.Post("/skills", this.attachJobSkills)
 	jobListing.Get("/skills/:jobListingId", this.getJobSkills)
 
@@ -107,6 +109,64 @@ func (this *JobListingController) createJobListing(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "job listing created successfully",
+	})
+
+}
+
+// TODO : stopped here! Test this handler, and consume from AI
+
+func (this *JobListingController) deleteJobListing(c *fiber.Ctx) error {
+
+	jobListingParam := c.Query("jobListingId")
+	jobListingId, err := strconv.Atoi(jobListingParam)
+	contacts := []entity.Contact{}
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "jobListingId query param was invalid",
+		})
+	}
+
+	tx := this.dbService.Db.Where("job_listing_id = ?", jobListingId).Delete(&entity.Note{})
+
+	if tx.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "unable to delete job listing notes",
+		})
+	}
+
+	tx = this.dbService.Db.Find(&contacts, "job_listing_id = ?", jobListingId)
+
+	if tx.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "unable to retrieve job listing contacts",
+		})
+	}
+
+	for i := 0; i < len(contacts); i++ {
+		contacts[i].JobListingId = -1
+	}
+
+	tx = this.dbService.Db.Save(&contacts)
+
+	if tx.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "unable to modify job listing contacts",
+		})
+	}
+
+	tx = this.dbService.Db.Where("job_listing_id = ?", jobListingId).Delete(&entity.JobSkill{})
+
+	if tx.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "unable to delete job listing skills",
+		})
+	}
+
+	tx = this.dbService.Db.Delete(&entity.JobListing{}, jobListingId)
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "successfully delted job listing, and related data",
 	})
 
 }
