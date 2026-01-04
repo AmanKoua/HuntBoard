@@ -27,8 +27,9 @@ func (this *JobListingController) Register(app *fiber.App) {
 	jobListing.Use(this.verifyProfileWrapper)
 
 	jobListing.Get("/", this.getJobListing)
-	jobListing.Post("/create", this.createJobListing)
 	jobListing.Delete("/", this.deleteJobListing)
+	jobListing.Post("/", this.createJobListing)
+	jobListing.Patch("/", this.updateJobListing)
 
 	jobListing.Post("/skills", this.attachJobSkills)
 	jobListing.Get("/skills/:jobListingId", this.getJobSkills)
@@ -113,8 +114,6 @@ func (this *JobListingController) createJobListing(c *fiber.Ctx) error {
 
 }
 
-// TODO : stopped here! Test this handler, and consume from AI
-
 func (this *JobListingController) deleteJobListing(c *fiber.Ctx) error {
 
 	jobListingParam := c.Query("jobListingId")
@@ -167,6 +166,56 @@ func (this *JobListingController) deleteJobListing(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": "successfully delted job listing, and related data",
+	})
+
+}
+
+func (this *JobListingController) updateJobListing(c *fiber.Ctx) error {
+
+	updateJobListingRequest := request.UpdateJobListingRequest{}
+
+	if err := c.BodyParser(&updateJobListingRequest); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "could not parse job listing modification request",
+		})
+	}
+
+	err := this.validator.Struct(updateJobListingRequest)
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "job listing modification request body failed validation!",
+		})
+	}
+
+	if updateJobListingRequest.Id < 0 || updateJobListingRequest.Company == "" || updateJobListingRequest.LocationType == "" || updateJobListingRequest.Link == "" || updateJobListingRequest.Salary == 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "job modification request body failed, because required fields are missing or invalid!",
+		})
+	}
+
+	updatedJobListing := &entity.JobListing{
+		Id:                     updateJobListingRequest.Id,
+		ProfileId:              updateJobListingRequest.ProfileId,
+		Company:                updateJobListingRequest.Company,
+		LocationType:           updateJobListingRequest.LocationType,
+		Link:                   updateJobListingRequest.Link,
+		PostingDate:            updateJobListingRequest.PostingDate,
+		NumInterviews:          updateJobListingRequest.NumInterviews,
+		NumInterviewsCompleted: updateJobListingRequest.NumInterviewsCompleted,
+		Level:                  updateJobListingRequest.Level,
+		Salary:                 updateJobListingRequest.Salary,
+		Status:                 updateJobListingRequest.Status,
+	}
+
+	if tx := this.dbService.Db.Save(updatedJobListing); tx.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "unable to update job listing",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "successfully updated job listing",
 	})
 
 }

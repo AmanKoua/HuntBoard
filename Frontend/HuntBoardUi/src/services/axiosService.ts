@@ -24,7 +24,7 @@ export const getJobListings = async () => {
 }
 
 export const createJobListing = async (requestBody: ICreateJobListingRequest) => {
-    await axios.post("http://localhost:8080/job-listing/create", requestBody, {
+    await axios.post("http://localhost:8080/job-listing", requestBody, {
         headers: { profileId: getLocalProfile().id }
     })
 }
