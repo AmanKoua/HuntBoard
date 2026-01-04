@@ -29,6 +29,12 @@ export const createJobListing = async (requestBody: ICreateJobListingRequest) =>
     })
 }
 
+export const deleteJobListing = async () => {
+    await axios.delete("http://localhost:8080/job-listing", {
+        headers: { profileId: getLocalProfile().id }
+    })
+}
+
 export const attachJobListingNote = async (requestBody: IAttachNotesRequest) => {
     await axios.post("http://localhost:8080/job-listing/notes", requestBody, {
         headers: { profileId: getLocalProfile().id }
@@ -81,3 +87,4 @@ export const deleteContact = async (contactId: number) => {
         headers: { profileId: getLocalProfile().id }
     })
 }
+

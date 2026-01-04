@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from "react"
 
 import "./JobListingDetails.scss"
 import { CreateNotesContent } from "../modalContent/createNotesContent/CreateNotesContent"
-import { getJobListingNotes } from "../../services/axiosService"
+import { deleteJobListing, getJobListingNotes } from "../../services/axiosService"
 import { panic } from "../../utils/helpers"
 import { Modal } from "../../components/modal/Modal"
 import { CreateContactContent } from "../modalContent/createContactContent/CreateContactContent"
@@ -16,10 +16,11 @@ import deleteIcon from "../../../public/icons/delete.svg";
 import editIcon from "../../../public/icons/edit.svg"
 
 export interface IJobListingDetails {
-    jobListing: JobListing
+    jobListing: JobListing;
+    getJobListingsWrapper: () => void;
 }
 
-export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
+export const JobListingDetails = ({ jobListing, getJobListingsWrapper }: IJobListingDetails) => {
 
     const [selectedNote, setSelectedNote] = useState<JobListingNote | null>(null)
     const [selectedNoteName, setSelectedNoteName] = useState("");
@@ -35,7 +36,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
     const [jobListingContacts, setJobListingContacts] = useState<Contact[]>([])
     const [jobListingContactsOptions, setJobListingContactsOptions] = useState<string[]>([])
 
-    const { contacts, setContacts } = useContext(AppContext)
+    const { contacts, setContacts, setIsAlertBannerOpen, setAlertBannerData } = useContext(AppContext)
 
     const fetchJobListingNotesWrapper = () => {
         getJobListingNotes(jobListing.id).then((result) => {
@@ -92,6 +93,26 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         )
     }, [selectedContactName])
 
+    // TODO : stopped here! test deletion of job listing
+    const deleteJobListingsHandler = () => {
+        deleteJobListing()
+            .then(() => {
+                setAlertBannerData({
+                    message: "Job listing deleted successfully!",
+                    type: "info"
+                })
+                setIsAlertBannerOpen(true)
+                getJobListingsWrapper()
+            })
+            .catch(() => {
+                setAlertBannerData({
+                    message: "Job listing deletion failed!",
+                    type: "alert"
+                })
+                setIsAlertBannerOpen(true)
+            })
+    }
+
     const closeNoteModalHandler = () => {
         setIsNotesModalOpen(false)
     }
@@ -105,7 +126,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
             <h2>{jobListing.company}</h2>
             <p><strong>Posted : </strong> {jobListing.postingDate}</p>
             <div className='listing-header__buttons-container'>
-                <button>
+                <button onClick={deleteJobListingsHandler}>
                     <img className='icon delete' src={deleteIcon} />
                 </button>
                 <button>

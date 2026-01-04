@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react"
 import { JobListingCard } from "../../components/jobListingCard/JobListingCard"
 import "./Dashboard.scss"
 import { AppContext } from "../../context/appContext"
-import { getContacts, getJobListings } from "../../services/axiosService"
+import { getJobListings } from "../../services/axiosService"
 import { useState } from "react"
 import { CreateJobListingContent } from "../../components/modalContent/createJobListingContent/CreateJobListingContent"
 import { JobListingDetails } from "../../components/jobListingDetails/JobListingDetails"
@@ -18,18 +18,20 @@ export const Dashboard = () => {
     const appContext = useContext(AppContext)
     const { jobListings, setJobListings, setAlertBannerData, setIsAlertBannerOpen } = appContext
 
-    // TODO : refactor logic into hook, just like for contacts?
-    useEffect(() => {
 
+    const getJobListingsWrapper = () => {
         getJobListings()
             .then((listings) => {
                 setJobListings(listings)
             })
             .catch(() => {
-                setAlertBannerData({message:"failed to retrieve job listings!", type:"alert"})
+                setAlertBannerData({ message: "failed to retrieve job listings!", type: "alert" })
                 setIsAlertBannerOpen(true);
             })
+    }
 
+    useEffect(() => {
+        getJobListingsWrapper()
     }, [])
 
     useFetchContacts()
@@ -63,7 +65,7 @@ export const Dashboard = () => {
                     <CreateJobListingContent closeModalHandler={closeModalHandler} />
                 </Modal>
             </section>
-            {selectedJobListing && <JobListingDetails jobListing={selectedJobListing} />}
+            {selectedJobListing && <JobListingDetails jobListing={selectedJobListing} getJobListingsWrapper={getJobListingsWrapper}/>}
         </div>
     </main>
 
