@@ -142,16 +142,20 @@ func (this *JobListingController) deleteJobListing(c *fiber.Ctx) error {
 		})
 	}
 
-	for i := 0; i < len(contacts); i++ {
-		contacts[i].JobListingId = -1
-	}
+	if len(contacts) > 0 {
 
-	tx = this.dbService.Db.Save(&contacts)
+		for i := 0; i < len(contacts); i++ {
+			contacts[i].JobListingId = -1
+		}
 
-	if tx.Error != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "unable to modify job listing contacts",
-		})
+		tx = this.dbService.Db.Save(&contacts)
+
+		if tx.Error != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "unable to modify job listing contacts",
+			})
+		}
+
 	}
 
 	tx = this.dbService.Db.Where("job_listing_id = ?", jobListingId).Delete(&entity.JobSkill{})
