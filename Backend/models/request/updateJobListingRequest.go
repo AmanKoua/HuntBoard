@@ -2,7 +2,6 @@ package request
 
 type UpdateJobListingRequest struct {
 	Id                     int64  `json:"id" gorm:"primaryKey"`
-	ProfileId              int64  `json:"profileId"`
 	Company                string `json:"company"`
 	LocationType           string `json:"locationType"` // in-person, hybrid, remote
 	Link                   string `json:"link"`

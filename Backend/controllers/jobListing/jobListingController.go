@@ -172,6 +172,7 @@ func (this *JobListingController) deleteJobListing(c *fiber.Ctx) error {
 
 func (this *JobListingController) updateJobListing(c *fiber.Ctx) error {
 
+	profile := c.Locals("profile").(entity.Profile)
 	updateJobListingRequest := request.UpdateJobListingRequest{}
 
 	if err := c.BodyParser(&updateJobListingRequest); err != nil {
@@ -196,7 +197,7 @@ func (this *JobListingController) updateJobListing(c *fiber.Ctx) error {
 
 	updatedJobListing := &entity.JobListing{
 		Id:                     updateJobListingRequest.Id,
-		ProfileId:              updateJobListingRequest.ProfileId,
+		ProfileId:              profile.Id,
 		Company:                updateJobListingRequest.Company,
 		LocationType:           updateJobListingRequest.LocationType,
 		Link:                   updateJobListingRequest.Link,
