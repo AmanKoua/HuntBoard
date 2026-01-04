@@ -14,6 +14,7 @@ export const Dashboard = () => {
 
     const [isJobListingModalOpen, setIsJobListingModalOpen] = useState<boolean>(false)
     const [selectedJobListing, setSelectedJobListing] = useState<JobListing | null>(null)
+    const [isUpdatingJobListing, setIsUpdatingJobListing] = useState(false)
 
     const appContext = useContext(AppContext)
     const { jobListings, setJobListings, setAlertBannerData, setIsAlertBannerOpen } = appContext
@@ -33,6 +34,12 @@ export const Dashboard = () => {
     useEffect(() => {
         getJobListingsWrapper()
     }, [])
+
+    useEffect(() => {
+        if (!isJobListingModalOpen) {
+            setIsUpdatingJobListing(false)
+        }
+    }, [isJobListingModalOpen])
 
     useFetchContacts()
 
@@ -61,11 +68,11 @@ export const Dashboard = () => {
                     Create Job Listing
                 </button>
 
-                <Modal isOpen={isJobListingModalOpen} title={"Create Job Listing"} closeHandler={closeModalHandler}>
-                    <CreateJobListingContent closeModalHandler={closeModalHandler} />
+                <Modal isOpen={isJobListingModalOpen} title={isUpdatingJobListing ? "Update Job Listing" : "Create Job Listing"} closeHandler={closeModalHandler}>
+                    <CreateJobListingContent closeModalHandler={closeModalHandler} selectedJobListing={selectedJobListing} setSelectedJobListing={setSelectedJobListing} isUpdating={isUpdatingJobListing} getJobListingsWrapper={getJobListingsWrapper} />
                 </Modal>
             </section>
-            {selectedJobListing && <JobListingDetails jobListing={selectedJobListing} getJobListingsWrapper={getJobListingsWrapper}/>}
+            {selectedJobListing && <JobListingDetails jobListing={selectedJobListing} getJobListingsWrapper={getJobListingsWrapper} setIsUpdatingJobListing={setIsUpdatingJobListing} toggleModalHandler={toggleModalHandler} setSelectedJobListing={setSelectedJobListing} />}
         </div>
     </main>
 

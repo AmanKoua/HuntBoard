@@ -56,6 +56,19 @@ export interface ICreateJobListingRequest {
     status: string;
 }
 
+export interface IUpdateJobListingRequest {
+    id: number;
+    company: string;
+    locationType: string;
+    link: string;
+    postingDate: string;
+    numInterviews: number;
+    numInterviewsCompleted: number;
+    level: string;
+    salary: number;
+    status: string;
+}
+
 export interface IAttachNotesRequest {
     jobListingId: number;
     content: string;

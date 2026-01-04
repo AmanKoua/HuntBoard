@@ -1,5 +1,5 @@
 import axios from "axios"
-import type { Profile, JobListing, IAttachNotesRequest, ICreateJobListingRequest, JobListingNote, ICreateContactRequest, Contact } from "../utils/types"
+import type { Profile, JobListing, IAttachNotesRequest, ICreateJobListingRequest, JobListingNote, ICreateContactRequest, Contact, IUpdateJobListingRequest } from "../utils/types"
 import { getLocalProfile } from "../utils/helpers"
 
 // TODO : add zod to the equation?
@@ -29,6 +29,12 @@ export const createJobListing = async (requestBody: ICreateJobListingRequest) =>
     })
 }
 
+export const updateJobListing = async (requestBody: IUpdateJobListingRequest) => {
+    await axios.patch("http://localhost:8080/job-listing", requestBody, {
+        headers: { profileId: getLocalProfile().id }
+    })
+}
+
 export const deleteJobListing = async (jobListingId: number) => {
     await axios.delete(`http://localhost:8080/job-listing?jobListingId=${jobListingId}`, {
         headers: { profileId: getLocalProfile().id }
@@ -50,7 +56,7 @@ export const getJobListingNotes = async (jobListingId: number) => {
 }
 
 export const deleteJobListingNote = async (noteId: number) => {
-    await axios.delete(`http://localhost:8080/job-listing/notes?noteId=${noteId}`,{
+    await axios.delete(`http://localhost:8080/job-listing/notes?noteId=${noteId}`, {
         headers: { profileId: getLocalProfile().id }
     })
 }
@@ -83,7 +89,7 @@ export const getContacts = async (jobListingId?: number) => {
 }
 
 export const deleteContact = async (contactId: number) => {
-    await axios.delete(`http://localhost:8080/contact?contactId=${contactId}`,{
+    await axios.delete(`http://localhost:8080/contact?contactId=${contactId}`, {
         headers: { profileId: getLocalProfile().id }
     })
 }

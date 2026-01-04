@@ -1,4 +1,4 @@
-import type { Contact, JobListing, JobListingNote } from "../../utils/types"
+import type { Contact, JobListing, JobListingNote, SetState } from "../../utils/types"
 import { useState, useEffect, useContext } from "react"
 
 import "./JobListingDetails.scss"
@@ -18,9 +18,12 @@ import editIcon from "../../../public/icons/edit.svg"
 export interface IJobListingDetails {
     jobListing: JobListing;
     getJobListingsWrapper: () => void;
+    setIsUpdatingJobListing: SetState<boolean>;
+    toggleModalHandler: (val: boolean) => void;
+    setSelectedJobListing: SetState<JobListing | null>;
 }
 
-export const JobListingDetails = ({ jobListing, getJobListingsWrapper }: IJobListingDetails) => {
+export const JobListingDetails = ({ jobListing, getJobListingsWrapper, setIsUpdatingJobListing, toggleModalHandler, setSelectedJobListing }: IJobListingDetails) => {
 
     const [selectedNote, setSelectedNote] = useState<JobListingNote | null>(null)
     const [selectedNoteName, setSelectedNoteName] = useState("");
@@ -110,6 +113,8 @@ export const JobListingDetails = ({ jobListing, getJobListingsWrapper }: IJobLis
                     type: "alert"
                 })
                 setIsAlertBannerOpen(true)
+            }).finally(()=>{
+                setSelectedJobListing(null)
             })
     }
 
@@ -121,6 +126,11 @@ export const JobListingDetails = ({ jobListing, getJobListingsWrapper }: IJobLis
         setIsContactModalOpen(false)
     }
 
+    const handleJobListingEdit = () => {
+        setIsUpdatingJobListing(true)
+        toggleModalHandler(true)
+    }
+
     return <aside>
         <div className='listing-header'>
             <h2>{jobListing.company}</h2>
@@ -129,7 +139,7 @@ export const JobListingDetails = ({ jobListing, getJobListingsWrapper }: IJobLis
                 <button onClick={deleteJobListingsHandler}>
                     <img className='icon delete' src={deleteIcon} />
                 </button>
-                <button>
+                <button onClick={handleJobListingEdit}>
                     <img className='icon edit' src={editIcon} />
                 </button>
             </div>
