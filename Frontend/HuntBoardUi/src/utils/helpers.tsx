@@ -1,4 +1,4 @@
-import type { Profile } from "./types"
+import type { Profile, SetState } from "./types"
 
 export const panic = (msg: string) => {
     throw new Error(msg)
@@ -50,4 +50,12 @@ export const getChangeHandler = (setterFunc: (val: string) => void, sanitizer?: 
 
 export const formatPhoneNum = (num: string) => {
     return `${num.substring(0,3)}-${num.substring(3,6)}-${num.substring(6)}`
+}
+
+export const generateSectionToggleButton = (state: boolean, setState: SetState<boolean>) => {
+    return <button onClick={() => {
+        setState(val => !val)
+    }}>
+        {state ? '+' : '-'}
+    </button>
 }

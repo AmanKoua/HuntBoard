@@ -1,30 +1,19 @@
-import type { Contact, JobListing, JobListingNote, SetState } from "../../utils/types"
-import { SelectorGrid } from "../selectorGrid/SelectorGrid"
+import type { Contact, JobListing, JobListingNote } from "../../utils/types"
 import { useState, useEffect, useContext } from "react"
 
 import "./JobListingDetails.scss"
 import { CreateNotesContent } from "../modalContent/createNotesContent/CreateNotesContent"
-import { deleteContact, getJobListingNotes } from "../../services/axiosService"
-import { assert, panic } from "../../utils/helpers"
+import { getJobListingNotes } from "../../services/axiosService"
+import { panic } from "../../utils/helpers"
 import { Modal } from "../../components/modal/Modal"
 import { CreateContactContent } from "../modalContent/createContactContent/CreateContactContent"
 import { AppContext } from "../../context/appContext"
-import { ContactCard } from "../contactCard/ContactCard"
 
-import deleteIcon from "../../../public/icons/delete.svg";
-import editIcon from "../../../public/icons/edit.svg"
 import { NotesSection } from "../notesSection/NotesSection"
+import { ContactsSection } from "../contactsSection/ContactsSections"
 
 export interface IJobListingDetails {
     jobListing: JobListing
-}
-
-const generateSectionToggleButton = (state: boolean, setState: SetState<boolean>) => {
-    return <button onClick={() => {
-        setState(val => !val)
-    }}>
-        {state ? '+' : '-'}
-    </button>
 }
 
 export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
@@ -43,7 +32,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
     const [jobListingContacts, setJobListingContacts] = useState<Contact[]>([])
     const [jobListingContactsOptions, setJobListingContactsOptions] = useState<string[]>([])
 
-    const { contacts, setContacts, setAlertBannerData, setIsAlertBannerOpen } = useContext(AppContext)
+    const { contacts, setContacts} = useContext(AppContext)
 
     const fetchJobListingNotesWrapper = () => {
         getJobListingNotes(jobListing.id).then((result) => {
@@ -100,28 +89,6 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         )
     }, [selectedContactName])
 
-    const deleteContactHandler = () => {
-        assert(!!selectedContact, "expected selected contact NOT to be falsy!")
-
-        deleteContact(selectedContact!.id).then(() => {
-            setAlertBannerData({
-                message: "successfully deleted contact",
-                type: "info"
-            })
-            setIsAlertBannerOpen(true)
-
-            const filteredContacts = contacts.filter(contact => contact.id !== selectedContact!.id)
-            setContacts(filteredContacts)
-
-        }).catch(() => {
-            setAlertBannerData({
-                message: "failed to delete contact",
-                type: "alert"
-            })
-            setIsAlertBannerOpen(true)
-        })
-    }
-
     const closeNoteModalHandler = () => {
         setIsNotesModalOpen(false)
     }
@@ -129,8 +96,6 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
     const closeContactModalHandler = () => {
         setIsContactModalOpen(false)
     }
-
-    // TODO : refactor this
 
     return <aside>
         <div className='listing-header'>
@@ -142,29 +107,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
             <a href={jobListing.link} target="_blank" rel="noopener noreferrer">{jobListing.link}</a>
         </p>
         <NotesSection jobListingNoteNames={jobListingNoteNames} isNotesCollapsed={isNotesCollapsed} setIsNotesCollapsed={setIsNotesCollapsed} selectedNote={selectedNote} selectedNoteName={selectedNoteName} setSelectedNoteName={setSelectedNoteName} fetchJobListingNotesWrapper={fetchJobListingNotesWrapper}/>
-        <div className="contacts-section contacts-section--padded">
-            <div className='contacts-section__header'>
-                <h3>Contacts ({jobListingContacts.length})</h3>
-                {generateSectionToggleButton(isContactsCollapsed, setIsContactsCollapsed)}
-            </div>
-            {!isContactsCollapsed && jobListingContacts.length > 0 &&
-                <div className='contacts-section__content'>
-                    <SelectorGrid value={selectedContactName} setValue={setSelectedContactName} options={jobListingContactsOptions} maxRowLen={4} />
-                    {selectedContact && <ContactCard contact={selectedContact} />}
-                    {selectedContact &&
-                        <div className='contacts-section__content__icon-row'>
-                            <button onClick={deleteContactHandler}>
-                                <img className='icon delete' src={deleteIcon} />
-                            </button>
-                            <button>
-                                <img className='icon edit' src={editIcon} />
-                            </button>
-                        </div>
-                    }
-
-                </div>
-            }
-        </div>
+        <ContactsSection contacts={contacts} setContacts={setContacts} jobListingContacts={jobListingContacts} isContactsCollapsed={isContactsCollapsed} setIsContactsCollapsed={setIsContactsCollapsed} selectedContact={selectedContact} selectedContactName={selectedContactName} setSelectedContactName={setSelectedContactName} jobListingContactsOptions={jobListingContactsOptions} setJobListingContactsOptions={setJobListingContactsOptions}/>
         <div className="button-row">
             <button className="button-row__button" onClick={() => { setIsNotesModalOpen(true) }}>Create New Note</button>
             <button className="button-row__button" onClick={() => { setIsContactModalOpen(true) }}>Create New Contact</button>

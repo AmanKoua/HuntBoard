@@ -1,19 +1,12 @@
 import type { JobListingNote, SetState } from "../../utils/types"
-import deleteIcon from "../../../public/icons/delete.svg";
-import editIcon from "../../../public/icons/edit.svg"
 import { SelectorGrid } from "../selectorGrid/SelectorGrid";
 import { deleteJobListingNote } from "../../services/axiosService";
-import { assert } from "../../utils/helpers";
+import { assert, generateSectionToggleButton } from "../../utils/helpers";
 import { useContext } from "react";
 import { AppContext } from "../../context/appContext";
 
-const generateSectionToggleButton = (state: boolean, setState: SetState<boolean>) => {
-    return <button onClick={() => {
-        setState(val => !val)
-    }}>
-        {state ? '+' : '-'}
-    </button>
-}
+import deleteIcon from "../../../public/icons/delete.svg";
+import editIcon from "../../../public/icons/edit.svg"
 
 export interface INotesSection {
     jobListingNoteNames: string[];
