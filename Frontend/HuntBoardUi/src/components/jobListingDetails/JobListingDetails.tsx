@@ -1,10 +1,10 @@
 import type { Contact, JobListing, JobListingNote, SetState } from "../../utils/types"
 import { SelectorGrid } from "../selectorGrid/SelectorGrid"
-import { useState, useEffect, useContext, useCallback } from "react"
+import { useState, useEffect, useContext } from "react"
 
 import "./JobListingDetails.scss"
 import { CreateNotesContent } from "../modalContent/createNotesContent/CreateNotesContent"
-import { deleteContact, deleteJobListingNote, getJobListingNotes } from "../../services/axiosService"
+import { deleteContact, getJobListingNotes } from "../../services/axiosService"
 import { assert, panic } from "../../utils/helpers"
 import { Modal } from "../../components/modal/Modal"
 import { CreateContactContent } from "../modalContent/createContactContent/CreateContactContent"
@@ -13,9 +13,18 @@ import { ContactCard } from "../contactCard/ContactCard"
 
 import deleteIcon from "../../../public/icons/delete.svg";
 import editIcon from "../../../public/icons/edit.svg"
+import { NotesSection } from "../notesSection/NotesSection"
 
 export interface IJobListingDetails {
     jobListing: JobListing
+}
+
+const generateSectionToggleButton = (state: boolean, setState: SetState<boolean>) => {
+    return <button onClick={() => {
+        setState(val => !val)
+    }}>
+        {state ? '+' : '-'}
+    </button>
 }
 
 export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
@@ -91,14 +100,6 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         )
     }, [selectedContactName])
 
-    const generateSectionToggleButton = useCallback((state: boolean, setState: SetState<boolean>) => {
-        return <button onClick={() => {
-            setState(val => !val)
-        }}>
-            {state ? '+' : '-'}
-        </button>
-    }, [setIsNotesCollapsed, setIsContactsCollapsed, isContactsCollapsed, isNotesCollapsed])
-
     const deleteContactHandler = () => {
         assert(!!selectedContact, "expected selected contact NOT to be falsy!")
 
@@ -121,26 +122,6 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         })
     }
 
-    const deleteNoteHandler = () => {
-        assert(!!selectedNote, "expected selected note NOT to be falsy!")
-
-        deleteJobListingNote(selectedNote!.id).then(() => {
-            setAlertBannerData({
-                message: "successfully deleted note",
-                type: "info"
-            })
-            setIsAlertBannerOpen(true)
-            fetchJobListingNotesWrapper()
-        }).catch(() => {
-            setAlertBannerData({
-                message: "failed to delete note",
-                type: "alert"
-            })
-            setIsAlertBannerOpen(true)
-        })
-
-    }
-
     const closeNoteModalHandler = () => {
         setIsNotesModalOpen(false)
     }
@@ -160,28 +141,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
             <strong>Link : </strong>
             <a href={jobListing.link} target="_blank" rel="noopener noreferrer">{jobListing.link}</a>
         </p>
-        <div className='notes-section'>
-            <div className='notes-section__header'>
-                <h3>Notes ({jobListingNoteNames.length})</h3>
-                {generateSectionToggleButton(isNotesCollapsed, setIsNotesCollapsed)}
-            </div>
-            {!isNotesCollapsed && jobListingNoteNames.length > 0 &&
-                <div className='notes-section__content'>
-                    <SelectorGrid value={selectedNoteName} setValue={setSelectedNoteName} options={jobListingNoteNames} maxRowLen={4} />
-                    {selectedNote && <textarea readOnly value={selectedNote.content} />}
-                    {selectedNote &&
-                        <div className='notes-section__content__icon-row'>
-                            <button onClick={deleteNoteHandler}>
-                                <img className='icon delete' src={deleteIcon} />
-                            </button>
-                            <button>
-                                <img className='icon edit' src={editIcon} />
-                            </button>
-                        </div>
-                    }
-                </div>
-            }
-        </div>
+        <NotesSection jobListingNoteNames={jobListingNoteNames} isNotesCollapsed={isNotesCollapsed} setIsNotesCollapsed={setIsNotesCollapsed} selectedNote={selectedNote} selectedNoteName={selectedNoteName} setSelectedNoteName={setSelectedNoteName} fetchJobListingNotesWrapper={fetchJobListingNotesWrapper}/>
         <div className="contacts-section contacts-section--padded">
             <div className='contacts-section__header'>
                 <h3>Contacts ({jobListingContacts.length})</h3>
@@ -217,3 +177,4 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         </Modal>
     </aside>
 }
+
