@@ -14,14 +14,26 @@ aside {
         flex-direction: row;
         justify-content: space-around;
         border-bottom: 1px solid black;
+        padding: .50rem;
         // background-color: blue;
 
+        &__buttons-container {
+            display: flex;
+            justify-content: space-between;
+            width: 6rem;
+            margin: auto 0 auto 0;
+            height: max-content;
+            // background-color: red;
+        }
+
         h2 {
-            margin: 0 0 0;
+            margin: auto 0 auto 0;
             // background-color: fuchsia;
         }
 
         p {
+            margin: auto 0 auto 0;
+            height: max-content;
             // background-color: orange;
         }
 

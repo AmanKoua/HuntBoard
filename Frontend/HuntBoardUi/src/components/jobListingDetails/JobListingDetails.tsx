@@ -12,6 +12,9 @@ import { AppContext } from "../../context/appContext"
 import { NotesSection } from "../notesSection/NotesSection"
 import { ContactsSection } from "../contactsSection/ContactsSections"
 
+import deleteIcon from "../../../public/icons/delete.svg";
+import editIcon from "../../../public/icons/edit.svg"
+
 export interface IJobListingDetails {
     jobListing: JobListing
 }
@@ -32,7 +35,7 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
     const [jobListingContacts, setJobListingContacts] = useState<Contact[]>([])
     const [jobListingContactsOptions, setJobListingContactsOptions] = useState<string[]>([])
 
-    const { contacts, setContacts} = useContext(AppContext)
+    const { contacts, setContacts } = useContext(AppContext)
 
     const fetchJobListingNotesWrapper = () => {
         getJobListingNotes(jobListing.id).then((result) => {
@@ -101,13 +104,21 @@ export const JobListingDetails = ({ jobListing }: IJobListingDetails) => {
         <div className='listing-header'>
             <h2>{jobListing.company}</h2>
             <p><strong>Posted : </strong> {jobListing.postingDate}</p>
+            <div className='listing-header__buttons-container'>
+                <button>
+                    <img className='icon delete' src={deleteIcon} />
+                </button>
+                <button>
+                    <img className='icon edit' src={editIcon} />
+                </button>
+            </div>
         </div>
         <p>
             <strong>Link : </strong>
             <a href={jobListing.link} target="_blank" rel="noopener noreferrer">{jobListing.link}</a>
         </p>
-        <NotesSection jobListingNoteNames={jobListingNoteNames} isNotesCollapsed={isNotesCollapsed} setIsNotesCollapsed={setIsNotesCollapsed} selectedNote={selectedNote} selectedNoteName={selectedNoteName} setSelectedNoteName={setSelectedNoteName} fetchJobListingNotesWrapper={fetchJobListingNotesWrapper}/>
-        <ContactsSection contacts={contacts} setContacts={setContacts} jobListingContacts={jobListingContacts} isContactsCollapsed={isContactsCollapsed} setIsContactsCollapsed={setIsContactsCollapsed} selectedContact={selectedContact} selectedContactName={selectedContactName} setSelectedContactName={setSelectedContactName} jobListingContactsOptions={jobListingContactsOptions} setJobListingContactsOptions={setJobListingContactsOptions}/>
+        <NotesSection jobListingNoteNames={jobListingNoteNames} isNotesCollapsed={isNotesCollapsed} setIsNotesCollapsed={setIsNotesCollapsed} selectedNote={selectedNote} selectedNoteName={selectedNoteName} setSelectedNoteName={setSelectedNoteName} fetchJobListingNotesWrapper={fetchJobListingNotesWrapper} />
+        <ContactsSection contacts={contacts} setContacts={setContacts} jobListingContacts={jobListingContacts} isContactsCollapsed={isContactsCollapsed} setIsContactsCollapsed={setIsContactsCollapsed} selectedContact={selectedContact} selectedContactName={selectedContactName} setSelectedContactName={setSelectedContactName} jobListingContactsOptions={jobListingContactsOptions} setJobListingContactsOptions={setJobListingContactsOptions} />
         <div className="button-row">
             <button className="button-row__button" onClick={() => { setIsNotesModalOpen(true) }}>Create New Note</button>
             <button className="button-row__button" onClick={() => { setIsContactModalOpen(true) }}>Create New Contact</button>
