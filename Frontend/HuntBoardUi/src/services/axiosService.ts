@@ -29,8 +29,8 @@ export const createJobListing = async (requestBody: ICreateJobListingRequest) =>
     })
 }
 
-export const deleteJobListing = async () => {
-    await axios.delete("http://localhost:8080/job-listing", {
+export const deleteJobListing = async (jobListingId: number) => {
+    await axios.delete(`http://localhost:8080/job-listing?jobListingId=${jobListingId}`, {
         headers: { profileId: getLocalProfile().id }
     })
 }

@@ -95,7 +95,7 @@ export const JobListingDetails = ({ jobListing, getJobListingsWrapper }: IJobLis
 
     // TODO : stopped here! test deletion of job listing
     const deleteJobListingsHandler = () => {
-        deleteJobListing()
+        deleteJobListing(jobListing.id)
             .then(() => {
                 setAlertBannerData({
                     message: "Job listing deleted successfully!",
